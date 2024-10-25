@@ -7,12 +7,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-<<<<<<< HEAD
 use Laravel\Sanctum\HasApiTokens;
-use App\Http\Controllers\Api\AuthController;
-=======
 use Spatie\Permission\Traits\HasRoles; //un trait es una forma de reusar código en múltiples clases
->>>>>>> origin/Crud-Api
+
 
 // Clase User que extiende de Authenticatable, permitiendo autenticación
 class User extends Authenticatable

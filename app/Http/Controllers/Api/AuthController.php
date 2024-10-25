@@ -22,27 +22,32 @@ use Illuminate\Support\Facades\Cookie;
 
 // Importa la clase Response para manejar respuestas HTTP
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
-{
-    // Método para registrar un nuevo usuario
-    public function register(Request $request) {
+{public function register(Request $request)
+    {
         // Validación de los datos de entrada
-        $request->validate([
-            'name' => 'required', // El nombre es requerido
-            'email' => 'required|email|unique:users', // El email es requerido, debe ser un email válido y único en la tabla users
-            'password' => 'required|confirmed' // La contraseña es requerida y debe ser confirmada
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
         ]);
-
+    
+        // Verificar si la validación falla
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors(), 'status' => 422], 422);
+        }
+    
         // Alta del usuario
         $user = new User(); // Crea una nueva instancia del modelo User
         $user->name = $request->name; // Asigna el nombre del request al modelo User
         $user->email = $request->email; // Asigna el email del request al modelo User
         $user->password = Hash::make($request->password); // Hashea la contraseña y la asigna al modelo User
         $user->save(); // Guarda el usuario en la base de datos
-
+    
         // Respuesta exitosa con el usuario creado
-        return response($user, Response::HTTP_CREATED); // Devuelve una respuesta con el usuario creado y el código 201 (Created)
+        return response()->json(['message' => 'Usuario registrado exitosamente.', 'user' => $user, 'status' => Response::HTTP_CREATED], Response::HTTP_CREATED);
     }
 
     // Método para iniciar sesión

@@ -1,57 +1,16 @@
 <?php
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-<<<<<<< HEAD
-use App\Http\Controllers\Api\ProductController;
-use App\Http\Controllers\Api\ShoppingCartController;
-use App\Http\Controllers\Api\UsuariosController;
 use App\Http\Controllers\Api\AuthController;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
-=======
 use App\Http\Controllers\Api\productController;
-use App\Http\Controllers\Api\usuariosController;
 use App\Http\Controllers\Api\categoriesController;
-
 use App\Http\Controllers\RolePermissionController;
-
-
-use App\Http\Controllers\Api\InvoiceController;
+use App\Http\Controllers\Api\invoiceController;
 use App\Http\Controllers\Api\subcategoriesController;
 
->>>>>>> origin/Crud-Api
 
-// Rutas para Productos (Administrador)
-// Muestra todos los productos
-Route::get('/products', [ProductController::class, 'index']);
 
-<<<<<<< HEAD
-// Agrega o crea un producto nuevo
-Route::post('/products', [ProductController::class, 'store']);
-
-// Elimina un producto específico
-Route::delete('/products/{id}', [ProductController::class, 'destroy']);
-
-// Actualiza los detalles de un producto específico
-Route::put('/products/{id}', [ProductController::class, 'update']);
-
-// Rutas para Productos (Cliente)
-// Muestra todos los productos disponibles
-Route::get('/products', [ProductController::class, 'index']);
-
-// Muestra los detalles de un producto específico
-Route::get('/products/{id}', [ProductController::class, 'show']);
-
-// Rutas para Usuarios
-// Muestra una lista de todos los usuarios
-Route::get('/Usuarios', [UsuariosController::class, 'mostrar']);
-
-// Busca un usuario específico por su ID
-Route::post('/Usuarios/{id}', [UsuariosController::class, 'buscar']);
-
-// Registra un nuevo usuario
-Route::post('/Usuarios', [UsuariosController::class, 'registrar']);
-=======
 //Administrador
 // Grupo de rutas CRUD para Administrador
 //Route::group(['prefix' => 'admin'], function ()
@@ -71,13 +30,21 @@ Route::post('/Usuarios', [UsuariosController::class, 'registrar']);
   // Ruta para obtener los detalles de un producto específico (administrador)
   Route::get('/products/{id}', [productController::class, 'show']);
 //});
->>>>>>> origin/Crud-Api
+
+// Grupo de rutas CRUD para Cliente
+//Route::group(['prefix' => 'client'], function ()
+ //{
+  // Ruta para listar todos los productos (cliente)
+  Route::get('/products', [productController::class, 'index']);
+
+  // Ruta para obtener los detalles de un producto específico (cliente)
+  Route::get('/products/{id}', [productController::class, 'show']);
+//});
 
 // Rutas para Autenticación de Usuarios
 // Registro de usuarios
 Route::post('/register', [AuthController::class, 'register']);
 
-<<<<<<< HEAD
 // Inicio de sesión de usuarios
 Route::post('/login', [AuthController::class, 'login']);
 
@@ -85,7 +52,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/login', function () {
     return response()->json(['message' => 'Please login.'], 401);
 })->name('login');
-=======
+
 //ROLES Y PERMISOS
 
 // Ruta para crear un nuevo rol
@@ -96,7 +63,7 @@ Route::post('/permissions', [RolePermissionController::class, 'createPermission'
 
 // Ruta para asignar permisos a un rol existente
 Route::post('/roles/assign-permissions', [RolePermissionController::class, 'assignPermissionToRole']);
->>>>>>> origin/Crud-Api
+
 
 // Rutas protegidas por middleware de autenticación
 // Solo accesibles si el usuario está autenticado
@@ -108,20 +75,11 @@ Route::middleware([EnsureFrontendRequestsAreStateful::class, 'auth:sanctum'])->g
     Route::post('logout', [AuthController::class, 'logout']);
 });
 
-<<<<<<< HEAD
 // Otras Rutas
 // Muestra una lista de todos los usuarios
 Route::get('users', [AuthController::class, 'allUsers']);
-=======
-// Grupo de rutas CRUD para Cliente
-//Route::group(['prefix' => 'client'], function ()
- //{
-  // Ruta para listar todos los productos (cliente)
-  Route::get('/products', [productController::class, 'index']);
 
-  // Ruta para obtener los detalles de un producto específico (cliente)
-  Route::get('/products/{id}', [productController::class, 'show']);
-//});
+
 
 // Grupo de rutas CRUD para Administrador
 //Route::group(['prefix' => 'admin'], function () {
@@ -156,5 +114,3 @@ Route::get('users', [AuthController::class, 'allUsers']);
   Route::get('/subcategories', [subcategoriesController::class, 'index']);
   Route::get('/subcategories/{id}', [subcategoriesController::class, 'show']);
 //});
-
->>>>>>> origin/Crud-Api
