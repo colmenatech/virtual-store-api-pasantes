@@ -7,5 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Invoice extends Model
 {
-    use HasFactory;
+    protected $table = 'invoice';
+
+    protected $fillable = [
+        'IdInvoice',
+        'IdUser',
+        'Total',
+        'CreatedAt'
+    ];
 }

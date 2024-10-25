@@ -15,6 +15,7 @@ class Products extends Model
         'Price',
         'Stock',
         'IdCategory',
+        'IdSubcategory',
         'Status'
     ];
 }
