@@ -1,116 +1,55 @@
 <?php
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
-use App\Http\Controllers\Api\productController;
-use App\Http\Controllers\Api\categoriesController;
+use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\CategoriesController;
 use App\Http\Controllers\RolePermissionController;
-use App\Http\Controllers\Api\invoiceController;
-use App\Http\Controllers\Api\subcategoriesController;
-
-
-
-//Administrador
-// Grupo de rutas CRUD para Administrador
-//Route::group(['prefix' => 'admin'], function ()
-//{
-  // Ruta para crear un nuevo producto (solo administrador)
-  Route::post('/products', [productController::class, 'store']);
-
-  // Ruta para actualizar un producto existente (solo administrador)
-  Route::put('/products/{id}', [productController::class, 'update']);
-
-  // Ruta para eliminar un producto existente (solo administrador)
-  Route::delete('/products/{id}', [productController::class, 'destroy']);
-
-  // Ruta para listar todos los productos (administrador)
-  Route::get('/products', [productController::class, 'index']);
-
-  // Ruta para obtener los detalles de un producto específico (administrador)
-  Route::get('/products/{id}', [productController::class, 'show']);
-//});
-
-// Grupo de rutas CRUD para Cliente
-//Route::group(['prefix' => 'client'], function ()
- //{
-  // Ruta para listar todos los productos (cliente)
-  Route::get('/products', [productController::class, 'index']);
-
-  // Ruta para obtener los detalles de un producto específico (cliente)
-  Route::get('/products/{id}', [productController::class, 'show']);
-//});
+use App\Http\Controllers\Api\InvoiceController;
+use App\Http\Controllers\Api\SubcategoriesController;
 
 // Rutas para Autenticación de Usuarios
-// Registro de usuarios
-Route::post('/register', [AuthController::class, 'register']);
-
-// Inicio de sesión de usuarios
-Route::post('/login', [AuthController::class, 'login']);
-
-// Redirección a la ruta de login si no está autenticado
+Route::post('/register', [AuthController::class, 'register']); // Registro de usuarios
+Route::post('/login', [AuthController::class, 'login']); // Inicio de sesión de usuarios
 Route::get('/login', function () {
     return response()->json(['message' => 'Please login.'], 401);
-})->name('login');
-
-//ROLES Y PERMISOS
-
-// Ruta para crear un nuevo rol
-Route::post('/roles', [RolePermissionController::class, 'createRole']);
-
-// Ruta para crear un nuevo permiso
-Route::post('/permissions', [RolePermissionController::class, 'createPermission']);
-
-// Ruta para asignar permisos a un rol existente
-Route::post('/roles/assign-permissions', [RolePermissionController::class, 'assignPermissionToRole']);
-
+})->name('login'); // Redirección a la ruta de login si no está autenticado
 
 // Rutas protegidas por middleware de autenticación
-// Solo accesibles si el usuario está autenticado
 Route::middleware([EnsureFrontendRequestsAreStateful::class, 'auth:sanctum'])->group(function () {
-    // Muestra el perfil del usuario autenticado
-    Route::get('user-profile', [AuthController::class, 'userProfile']);
-    
-    // Cierre de sesión del usuario
-    Route::post('logout', [AuthController::class, 'logout']);
+    Route::get('user-profile', [AuthController::class, 'userProfile']); // Muestra el perfil del usuario autenticado
+    Route::post('logout', [AuthController::class, 'logout']); // Cierre de sesión del usuario
+    Route::get('users', [AuthController::class, 'allUsers']); // Muestra una lista de todos los usuarios
+
+    // Rutas CRUD para Administrador (productos)
+    Route::post('/products', [ProductController::class, 'store']); // Crear un nuevo producto (solo administrador)
+    Route::put('/products/{id}', [ProductController::class, 'update']); // Actualizar un producto existente (solo administrador)
+    Route::delete('/products/{id}', [ProductController::class, 'destroy']); // Eliminar un producto existente (solo administrador)
+    Route::get('/products', [ProductController::class, 'index']); // Listar todos los productos (administrador)
+    Route::get('/products/{id}', [ProductController::class, 'show']); // Obtener los detalles de un producto específico (administrador)
+
+    // Rutas CRUD para Administrador (categorías)
+    Route::post('/categories', [CategoriesController::class, 'store']); // Crear una nueva categoría (solo administrador)
+    Route::put('/categories/{id}', [CategoriesController::class, 'update']); // Actualizar una categoría existente (solo administrador)
+    Route::delete('/categories/{id}', [CategoriesController::class, 'destroy']); // Eliminar una categoría existente (solo administrador)
+    Route::get('/categories', [CategoriesController::class, 'index']); // Listar todas las categorías (administrador)
+
+    // Rutas CRUD para Administrador (subcategorías)
+    Route::post('/subcategories', [SubcategoriesController::class, 'store']); // Crear una nueva subcategoría (solo administrador)
+    Route::put('/subcategories/{id}', [SubcategoriesController::class, 'update']); // Actualizar una subcategoría existente (solo administrador)
+    Route::delete('/subcategories/{id}', [SubcategoriesController::class, 'destroy']); // Eliminar una subcategoría existente (solo administrador)
+    Route::get('/subcategories', [SubcategoriesController::class, 'index']); // Listar todas las subcategorías (administrador)
+    Route::get('/subcategories/{id}', [SubcategoriesController::class, 'show']); // Obtener los detalles de una subcategoría específica (administrador)
+
+    // Facturas
+    Route::get('/invoice', [InvoiceController::class, 'index']); // Listar todas las facturas
+    Route::get('/invoice/{id}', [InvoiceController::class, 'show']); // Obtener los detalles de una factura específica
 });
 
-// Otras Rutas
-// Muestra una lista de todos los usuarios
-Route::get('users', [AuthController::class, 'allUsers']);
-
-
-
-// Grupo de rutas CRUD para Administrador
-//Route::group(['prefix' => 'admin'], function () {
-  // Ruta para crear una nueva categoría (solo administrador)
-  Route::post('/categories', [categoriesController::class, 'store']);
-
-  // Ruta para actualizar una categoría existente (solo administrador)
-  Route::put('/categories/{id}', [categoriesController::class, 'update']);
-
-  // Ruta para eliminar una categoría existente (solo administrador)
-  Route::delete('/categories/{id}', [categoriesController::class, 'destroy']);
-
-  // Ruta para listar todas las categorías (administrador)
-  Route::get('/categories', [categoriesController::class, 'index']);
-//});
-
-
-//Factura
-  // Ruta para listar todas las facturas
-  Route::get('/invoice', [InvoiceController::class, 'index']);
-
-  // Ruta para obtener los detalles de una facura en específico
-  Route::get('/invoice/{id}', [InvoiceController::class, 'show']);
-
-
-  //SUBCATEGORÍAS
-  // Rutas CRUD para Subcategorías
-//Route::group(['prefix' => 'admin'], function () {
-  Route::post('/subcategories', [subcategoriesController::class, 'store']);
-  Route::put('/subcategories/{id}', [subcategoriesController::class, 'update']);
-  Route::delete('/subcategories/{id}', [subcategoriesController::class, 'destroy']);
-  Route::get('/subcategories', [subcategoriesController::class, 'index']);
-  Route::get('/subcategories/{id}', [subcategoriesController::class, 'show']);
-//});
+// Rutas para Roles y Permisos
+Route::post('/roles', [RolePermissionController::class, 'createRole']); // Crear un nuevo rol
+Route::post('/permissions', [RolePermissionController::class, 'createPermission']); // Crear un nuevo permiso
+Route::post('/roles/assign-permissions', [RolePermissionController::class, 'assignPermissionToRole']); // Asignar permisos
+Route::post('/assign-role', [RolePermissionController::class, 'assignRole'])->middleware('auth:sanctum', 'role:admin');
