@@ -9,104 +9,67 @@ use App\Models\Categories;
 
 class categoriesController extends Controller
 {
-    // MÉTODO PARA OBTENER TODAS LAS CATEGORIAS
-   public function index()
-   {
-       // Obtener todas las categorías
-       $categories = Categories::all();
+    // Array de mensajes
+    private $messages = [
+        'found' => ['message' => 'Categorías encontradas.', 'status' => 200], // Añadir mensaje de encontrado exitosamente
+        'not_found' => ['message' => 'No se encontró la categoría.', 'status' => 404],
+        'created' => ['message' => 'Categoría creada exitosamente.', 'status' => 201],
+        'validation_error' => ['message' => 'Error en la validación de los datos.', 'status' => 400],
+        'creation_error' => ['message' => 'Error al crear la categoría.', 'status' => 500],
+        'deleted' => ['message' => 'Categoría eliminada exitosamente.', 'status' => 200], // Añadir mensaje de eliminado exitosamente
+        
+];
 
-       // Verificar si no se encontraron categorías
-       if ($categories->isEmpty()) {
-           return response()->json(['message' => 'No se encontraron categorías', 'status' => 404], 404);
-       }
+// MÉTODO PARA OBTENER TODAS LAS CATEGORÍAS
+public function index()
+{
+    // Obtener todas las categorías
+    $categories = Categories::all();
 
-       // Preparar la respuesta
-       $data = [
-           'categories' => $categories,
-           'status' => 200
-       ];
+    // Verificar si no se encontraron categorías
+    if ($categories->isEmpty()) {
+        // Retornar respuesta JSON con mensaje de "No se encontraron categorías" y código de estado 404
+        return response()->json($this->messages['not_found'], 404);
+    }
 
-       // Retornar la respuesta en formato JSON con código 200 OK
-       return response()->json($data, 200);
-   }
+    // Preparar y retornar respuesta JSON con las categorías encontradas y mensaje de éxito
+    return response()->json([
+        'message' => $this->messages['found']['message'], // Mensaje de éxito
+        'categories' => $categories, // Lista de categorías encontradas
+        'status' => $this->messages['found']['status'], // Código de estado 200
+    ], 200);
+}
 
 
 
    // MÉTODO PARA CREAR UNA NUEVA CATEGORIA
    public function store(Request $request)
    {
-       // Validar los datos del request
-       $validator = Validator::make($request->all(), [
-           'NameCategory' => 'required|string|max:50',
-       ]);
+        // Validar los datos del request
+        $validator = Validator::make($request->all(), [
+            'NameCategory' => 'required|string|max:50', // El nombre de la categoría es requerido y debe ser una cadena con un máximo de 50 caracteres
+        ]);
 
-       // Verificar si la validación falla
-       if ($validator->fails()) {
-           $data = [
-               'message' => 'Error en la validación de los datos',
-               'errors' => $validator->errors(),
-               'status' => 400
-           ];
-           // Retornar respuesta de error en formato JSON con código 400 Bad Request
-           return response()->json($data, 400);
-       }
-
-       // Crear la nueva categoría
-       $category = Categories::create([
-           'NameCategory' => $request->NameCategory,
-       ]);
-
-       // Verificar si la creación falla
-       if (!$category) {
-        $data = [
-            'message' => 'Error al crear la categoría',
-            'status' => 500
-        ];
-        // Retornar respuesta de error en formato JSON con código 500 Internal Server Error
-        return response()->json($data, 500);
-    }
-
-    // Preparar la respuesta exitosa
-    $data = [
-        'category' => $category,
-        'status' => 201
-    ];
-
-    // Retornar la respuesta en formato JSON con código 201 Created
-    return response()->json($data, 201);
-    }
-
-
-
-     /* MÉTODO PARA OBTENER UNA CATEGORIA POR SU ID
-     public function show($id)
-     {
-         // Buscar la categoría por ID
-         $category = Category::find($id);
-
-         // Verificar si la categoría no se encuentra
-         if (!$category) {
-             $data = [
-                 'message' => 'Categoría no encontrada',
-                 'status' => 404
-             ];
-             // Retornar respuesta de error en formato JSON con código 404 Not Found
-             return response()->json($data, 404);
-         }
-
-         // Preparar la respuesta exitosa
-         $data = [
-             'category' => $category,
-             'status' => 200
-         ];
-
-         // Retornar la respuesta en formato JSON con código 200 OK
-         return response()->json($data, 200);
-
+        // Verificar si la validación falla
+        if ($validator->fails()) {
+            // Retornar respuesta de error en formato JSON con el mensaje de validación de datos
+            return response()->json(array_merge($this->messages['validation_error'], ['errors' => $validator->errors()]), 400);
         }
-        */
 
+        // Crear la nueva categoría
+        $category = Categories::create([
+            'NameCategory' => $request->NameCategory, // Asignar el nombre de la categoría del request
+        ]);
 
+        // Verificar si la creación falla
+        if (!$category) {
+            // Retornar respuesta de error en formato JSON con mensaje de error en la creación
+            return response()->json($this->messages['creation_error'], 500);
+        }
+
+        // Retornar respuesta exitosa en formato JSON con el mensaje de creación exitosa y datos de la categoría
+        return response()->json(array_merge($this->messages['created'], ['category' => $category]), 201);
+    }
 
 
     // MÉTODO PARA ACTUALIZAR UNA CATEGORIA
@@ -157,32 +120,22 @@ class categoriesController extends Controller
     }
 
 
-     // MÉTODO PARA ELIMINAR UNA CATEGORIA
-     public function destroy($id)
-     {
-         // Buscar la categoría por ID
-         $category = Categories::find($id);
+    // MÉTODO PARA ELIMINAR UNA CATEGORÍA
+    public function destroy($id)
+    {
+        // Buscar la categoría por ID
+        $category = Categories::find($id);
 
-         // Verificar si la categoría no se encuentra
-         if (!$category) {
-             $data = [
-                 'message' => 'Categoría no encontrada',
-                 'status' => 404
-             ];
-             // Retornar respuesta de error en formato JSON con código 404 Not Found
-             return response()->json($data, 404);
-         }
-
-         // Eliminar la categoría
-         $category->delete();
-
-         // Preparar la respuesta exitosa
-         $data = [
-             'message' => 'Categoría eliminada',
-             'status' => 200
-         ];
-
-         // Retornar la respuesta en formato JSON con código 200 OK
-         return response()->json($data, 200);
+        // Verificar si la categoría no se encuentra
+        if (!$category) {
+            // Retornar respuesta JSON con mensaje de "No se encontró la categoría" y código de estado 404
+            return response()->json($this->messages['not_found'], 404);
         }
+
+        // Eliminar la categoría encontrada
+        $category->delete();
+
+        // Retornar respuesta JSON con mensaje de éxito y código de estado 200
+        return response()->json($this->messages['deleted'], 200);
+    }
 }
