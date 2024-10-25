@@ -5,37 +5,36 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\productController;
 use App\Http\Controllers\Api\usuariosController;
 use App\Http\Controllers\Api\categoriesController;
-<<<<<<< HEAD
+
 use App\Http\Controllers\RolePermissionController;
 
-=======
+
 use App\Http\Controllers\Api\InvoiceController;
 use App\Http\Controllers\Api\subcategoriesController;
->>>>>>> aa1b0fa1ec8c21f184679399b2b9c2bc471e1563
+
 
 //Productos
 
 //Administrador
 // Grupo de rutas CRUD para Administrador
-//Route::group(['prefix' => 'admin'], function () 
+//Route::group(['prefix' => 'admin'], function ()
 //{
   // Ruta para crear un nuevo producto (solo administrador)
   Route::post('/products', [productController::class, 'store']);
-  
+
   // Ruta para actualizar un producto existente (solo administrador)
   Route::put('/products/{id}', [productController::class, 'update']);
-  
+
   // Ruta para eliminar un producto existente (solo administrador)
   Route::delete('/products/{id}', [productController::class, 'destroy']);
-  
+
   // Ruta para listar todos los productos (administrador)
   Route::get('/products', [productController::class, 'index']);
-  
+
   // Ruta para obtener los detalles de un producto específico (administrador)
   Route::get('/products/{id}', [productController::class, 'show']);
 //});
 
-<<<<<<< HEAD
 
 //ROLES Y PERMISOS
 
@@ -49,13 +48,12 @@ Route::post('/permissions', [RolePermissionController::class, 'createPermission'
 Route::post('/roles/assign-permissions', [RolePermissionController::class, 'assignPermissionToRole']);
 
 
-=======
 // Grupo de rutas CRUD para Cliente
 //Route::group(['prefix' => 'client'], function ()
  //{
   // Ruta para listar todos los productos (cliente)
   Route::get('/products', [productController::class, 'index']);
-  
+
   // Ruta para obtener los detalles de un producto específico (cliente)
   Route::get('/products/{id}', [productController::class, 'show']);
 //});
@@ -64,19 +62,19 @@ Route::post('/roles/assign-permissions', [RolePermissionController::class, 'assi
 //Route::group(['prefix' => 'admin'], function () {
   // Ruta para crear una nueva categoría (solo administrador)
   Route::post('/categories', [categoriesController::class, 'store']);
-  
+
   // Ruta para actualizar una categoría existente (solo administrador)
   Route::put('/categories/{id}', [categoriesController::class, 'update']);
-  
+
   // Ruta para eliminar una categoría existente (solo administrador)
   Route::delete('/categories/{id}', [categoriesController::class, 'destroy']);
-  
+
   // Ruta para listar todas las categorías (administrador)
   Route::get('/categories', [categoriesController::class, 'index']);
 //});
 
 
-//Factura 
+//Factura
   // Ruta para listar todas las facturas
   Route::get('/invoice', [InvoiceController::class, 'index']);
 
@@ -93,4 +91,4 @@ Route::post('/roles/assign-permissions', [RolePermissionController::class, 'assi
   Route::get('/subcategories', [subcategoriesController::class, 'index']);
   Route::get('/subcategories/{id}', [subcategoriesController::class, 'show']);
 //});
->>>>>>> aa1b0fa1ec8c21f184679399b2b9c2bc471e1563
+

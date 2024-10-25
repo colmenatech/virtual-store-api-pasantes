@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('Price');
             $table->string('Stock');
             $table->string('IdCategory');
+            $table->string('IdSubcategory');
             $table->string('Status');
             $table->timestamps();
         });
