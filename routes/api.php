@@ -8,33 +8,58 @@ use App\Http\Controllers\Api\UsuariosController;
 use App\Http\Controllers\Api\AuthController;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 
-// Productos - Administrador
-Route::get('/products', [ProductController::class, 'index']); // Muestra todos los productos
-Route::post('/products', [ProductController::class, 'store']); // Agrega o crea producto
-Route::delete('/products/{id}', [ProductController::class, 'destroy']); // Elimina producto
-Route::put('/products/{id}', [ProductController::class, 'update']); // Actualiza el producto
+// Rutas para Productos (Administrador)
+// Muestra todos los productos
+Route::get('/products', [ProductController::class, 'index']);
 
-// Productos - Cliente
-Route::get('/products', [ProductController::class, 'index']); // Muestra todos los productos
-Route::get('/products/{id}', [ProductController::class, 'show']); // Muestra un producto específico
+// Agrega o crea un producto nuevo
+Route::post('/products', [ProductController::class, 'store']);
 
-// Usuarios
-Route::get('/Usuarios', [UsuariosController::class, 'mostrar']); // Muestra todos los usuarios
-Route::post('/Usuarios/{id}', [UsuariosController::class, 'buscar']); // Busca un usuario específico
-Route::post('/Usuarios', [UsuariosController::class, 'registrar']); // Registra un nuevo usuario
+// Elimina un producto específico
+Route::delete('/products/{id}', [ProductController::class, 'destroy']);
 
-// Autenticación de usuarios
-Route::post('/register', [AuthController::class, 'register']); // Registro
-Route::post('/login', [AuthController::class, 'login']); // Inicio de sesión
+// Actualiza los detalles de un producto específico
+Route::put('/products/{id}', [ProductController::class, 'update']);
+
+// Rutas para Productos (Cliente)
+// Muestra todos los productos disponibles
+Route::get('/products', [ProductController::class, 'index']);
+
+// Muestra los detalles de un producto específico
+Route::get('/products/{id}', [ProductController::class, 'show']);
+
+// Rutas para Usuarios
+// Muestra una lista de todos los usuarios
+Route::get('/Usuarios', [UsuariosController::class, 'mostrar']);
+
+// Busca un usuario específico por su ID
+Route::post('/Usuarios/{id}', [UsuariosController::class, 'buscar']);
+
+// Registra un nuevo usuario
+Route::post('/Usuarios', [UsuariosController::class, 'registrar']);
+
+// Rutas para Autenticación de Usuarios
+// Registro de usuarios
+Route::post('/register', [AuthController::class, 'register']);
+
+// Inicio de sesión de usuarios
+Route::post('/login', [AuthController::class, 'login']);
+
+// Redirección a la ruta de login si no está autenticado
 Route::get('/login', function () {
     return response()->json(['message' => 'Please login.'], 401);
-})->name('login'); // Ruta de login para redirección
+})->name('login');
 
 // Rutas protegidas por middleware de autenticación
+// Solo accesibles si el usuario está autenticado
 Route::middleware([EnsureFrontendRequestsAreStateful::class, 'auth:sanctum'])->group(function () {
-    Route::get('user-profile', [AuthController::class, 'userProfile']); // Perfil de usuario
-    Route::post('logout', [AuthController::class, 'logout']); // Cierre de sesión
+    // Muestra el perfil del usuario autenticado
+    Route::get('user-profile', [AuthController::class, 'userProfile']);
+    
+    // Cierre de sesión del usuario
+    Route::post('logout', [AuthController::class, 'logout']);
 });
 
-// Otros
-Route::get('users', [AuthController::class, 'allUsers']); // Muestra todos los usuarios
+// Otras Rutas
+// Muestra una lista de todos los usuarios
+Route::get('users', [AuthController::class, 'allUsers']);
