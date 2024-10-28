@@ -28,12 +28,7 @@ class productController extends Controller
             return response()->json($this->messages['not_found'], 404);
         }
 
-        // Preparar y retornar respuesta JSON con los productos encontrados y mensaje de éxito
-        return response()->json([
-            'message' => 'Productos encontrados.', // Mensaje de éxito
-            'products' => $products, // Lista de productos encontrados
-            'status' => 200, // Código de estado 200
-        ], 200);
+        return response()->json($this->messages['found'], 200);
     }
 
 

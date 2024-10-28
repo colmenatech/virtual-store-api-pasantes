@@ -14,7 +14,7 @@ class Products extends Model
         'Description',
         'Price',
         'Stock',
-       'NameCategory', // Actualizado aquí
+        'NameCategory', // Actualizado aquí
         'NameSub',
         'ImageURL', // Añadir el nuevo campo aquí
         'Status'
@@ -23,12 +23,12 @@ class Products extends Model
     //Relación del campo NameCategory de la tabla categories a la de products
     public function category()
     {
-        return $this->belongsTo(Category::class, 'NameCategory', 'NameCategory');
+        return $this->belongsTo(Categories::class, 'NameCategory', 'NameCategory');
     }
 
      //Relación del campo NameSub de la tabla categories a la de products
     public function subcategory()
     {
-        return $this->belongsTo(Subcategory::class, 'NameSub', 'NameSub');
+        return $this->belongsTo(Subcategories::class, 'NameSub', 'NameSub');
     }
 }
