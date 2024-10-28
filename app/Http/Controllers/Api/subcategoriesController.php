@@ -66,27 +66,27 @@ class subcategoriesController extends Controller
         $validator = Validator::make($request->all(), [
             'NameSub' => 'required|string|max:50', // Asegúrate de que el campo sea el mismo que en tu solicitud
         ]);
-    
+
         // Verificar si la validación falla
         if ($validator->fails()) {
             return response()->json(array_merge($this->messages['validation_error'], ['errors' => $validator->errors()]), 400);
         }
-    
+
         // Crear la nueva subcategoría
         $subcategory = Subcategories::create([
             'NameSub' => $request->NameSub, // Asegúrate de que el campo sea el mismo que en tu solicitud
-            'IdCategory' => $request->IdCategory,
+            'NameCategory' => $request->NameCategory, //El campo del nombre de la categoria es requerido
         ]);
-    
+
         // Verificar si la creación falla
         if (!$subcategory) {
             return response()->json($this->messages['creation_error'], 500);
         }
-    
+
         // Retornar respuesta exitosa en formato JSON con el mensaje de creación exitosa y datos de la subcategoría
         return response()->json(array_merge($this->messages['created'], ['subcategory' => $subcategory]), 201);
     }
-    
+
     // MÉTODO PARA ELIMINAR UNA SUBCATEGORÍA
     public function destroy($id)
     {
@@ -105,5 +105,32 @@ class subcategoriesController extends Controller
         // Retornar respuesta JSON con mensaje de éxito y código de estado 200
         return response()->json($this->messages['deleted'], 200);
     }
+
+
+    public function update(Request $request, $id)
+{
+    $subcategory = Subcategory::find($id);
+
+    if (!$subcategory) {
+        return response()->json(['message' => 'Subcategoría no encontrada.', 'status' => 404], 404);
+    }
+
+    $validator = Validator::make($request->all(), [
+        'NameSub' => 'required|string|max:255',
+        'NameCategory' => 'required|string|exists:categories,NameCategory',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json(['message' => 'Error en la validación de los datos.', 'errors' => $validator->errors(), 'status' => 400], 400);
+    }
+
+    $subcategory->update([
+        'NameSub' => $request->NameSub, //El campo nombre de subcategoria es requerido
+        'NameCategory' => $request->NameCategory, //El campo nombre de categoria es requerido
+    ]);
+
+    return response()->json(['message' => 'Subcategoría actualizada exitosamente.', 'subcategory' => $subcategory, 'status' => 200], 200);
+}
+
 
 }
