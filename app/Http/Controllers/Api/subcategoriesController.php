@@ -109,7 +109,7 @@ class subcategoriesController extends Controller
 
     public function update(Request $request, $id)
 {
-    $subcategory = Subcategory::find($id);
+    $subcategory = Subcategories::find($id);
 
     if (!$subcategory) {
         return response()->json(['message' => 'Subcategoría no encontrada.', 'status' => 404], 404);

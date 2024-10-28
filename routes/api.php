@@ -89,23 +89,5 @@ Route::post('/roles/assign-permissions', [RolePermissionController::class, 'assi
 //});
 
 
-//IMAGENES
-// Importar el controlador de imágenes
-
-
-// Definir la ruta para obtener todas las imágenes
-Route::get('/images', [imagesController::class, 'index']);
-
-// Definir la ruta para obtener una imagen específica por ID
-Route::get('/images/{id}', [imagesController::class, 'show']);
-
-// Definir la ruta para subir una nueva imagen
-Route::post('/images', [imagesController::class, 'store']);
-
-// Definir la ruta para actualizar una imagen existente
-Route::put('/images/{id}', [imagesController::class, 'update']);
-
-// Definir la ruta para eliminar una imagen
-Route::delete('/images/{id}', [imagesController::class, 'destroy']);
 
 

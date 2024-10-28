@@ -24,6 +24,6 @@ class Subcategories extends Model
     //Relacion del campo NameCategory de categories a la tabla subcategories
     public function category()
     {
-        return $this->belongsTo(Category::class, 'NameCategory', 'NameCategory');
+        return $this->belongsTo(Categories::class, 'NameCategory', 'NameCategory');
     }
 }
