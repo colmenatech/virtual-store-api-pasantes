@@ -7,20 +7,6 @@ use App\Http\Controllers\Api\categoriesController;
 use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\Api\InvoiceController;
 use App\Http\Controllers\Api\subcategoriesController;
-use App\Http\Controllers\Api\imagesController;
-
-Route::get("/products", [productController::class, "index"]);
-
-Route::get("/products/{id}", [productController::class, "show"]);
-
-Route::post("/products", [productController::class, "store"]); // Agregar producto al carrito
-
-Route::delete("/products/{id}", [productController::class, "destroy"]); // Eliminar producto del carrito
-
-Route::put("/products/{id}", [productController::class, "update"]);
-
-//Route::post('/products', [productController::class, 'checkout']); // Finalizar compra y generar factura
-
 
 //Productos
 
@@ -99,24 +85,3 @@ Route::post('/roles/assign-permissions', [RolePermissionController::class, 'assi
   Route::get('/subcategories', [subcategoriesController::class, 'index']);
   Route::get('/subcategories/{id}', [subcategoriesController::class, 'show']);
 //});
-
-
-//IMAGENES
-// Importar el controlador de imágenes
-
-
-// Definir la ruta para obtener todas las imágenes
-Route::get('/images', [imagesController::class, 'index']);
-
-// Definir la ruta para obtener una imagen específica por ID
-Route::get('/images/{id}', [imagesController::class, 'show']);
-
-// Definir la ruta para subir una nueva imagen
-Route::post('/images', [imagesController::class, 'store']);
-
-// Definir la ruta para actualizar una imagen existente
-Route::put('/images/{id}', [imagesController::class, 'update']);
-
-// Definir la ruta para eliminar una imagen
-Route::delete('/images/{id}', [imagesController::class, 'destroy']);
-
