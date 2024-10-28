@@ -9,6 +9,8 @@ use App\Http\Controllers\Api\CategoriesController;
 use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\Api\InvoiceController;
 use App\Http\Controllers\Api\SubcategoriesController;
+use App\Http\Controllers\Api\CartController; // Asume que tienes un controlador para el carrito
+use App\Http\Controllers\Api\PurchaseController; // Asume que tienes un controlador para las compras
 
 // Rutas para Autenticación de Usuarios
 Route::post('/register', [AuthController::class, 'register']); // Registro de usuarios
@@ -23,29 +25,39 @@ Route::middleware([EnsureFrontendRequestsAreStateful::class, 'auth:sanctum'])->g
     Route::post('logout', [AuthController::class, 'logout']); // Cierre de sesión del usuario
     Route::get('users', [AuthController::class, 'allUsers']); // Muestra una lista de todos los usuarios
 
-    // Rutas CRUD para Administrador (productos)
-    Route::post('/products', [ProductController::class, 'store']); // Crear un nuevo producto (solo administrador)
-    Route::put('/products/{id}', [ProductController::class, 'update']); // Actualizar un producto existente (solo administrador)
-    Route::delete('/products/{id}', [ProductController::class, 'destroy']); // Eliminar un producto existente (solo administrador)
-    Route::get('/products', [ProductController::class, 'index']); // Listar todos los productos (administrador)
-    Route::get('/products/{id}', [ProductController::class, 'show']); // Obtener los detalles de un producto específico (administrador)
+    // Middleware para rutas protegidas por roles de administrador
+    Route::middleware(['role:admin'])->group(function () {
+        // Rutas CRUD para Administradores (productos)
+        Route::post('/products', [ProductController::class, 'store']); // Crear un nuevo producto
+        Route::put('/products/{id}', [ProductController::class, 'update']); // Actualizar un producto existente
+        Route::delete('/products/{id}', [ProductController::class, 'destroy']); // Eliminar un producto existente
+        Route::get('/products', [ProductController::class, 'index']); // Listar todos los productos
+        Route::get('/products/{id}', [ProductController::class, 'show']); // Obtener los detalles de un producto específico
 
-    // Rutas CRUD para Administrador (categorías)
-    Route::post('/categories', [CategoriesController::class, 'store']); // Crear una nueva categoría (solo administrador)
-    Route::put('/categories/{id}', [CategoriesController::class, 'update']); // Actualizar una categoría existente (solo administrador)
-    Route::delete('/categories/{id}', [CategoriesController::class, 'destroy']); // Eliminar una categoría existente (solo administrador)
-    Route::get('/categories', [CategoriesController::class, 'index']); // Listar todas las categorías (administrador)
+        // Rutas CRUD para Administradores (categorías)
+        Route::post('/categories', [CategoriesController::class, 'store']); // Crear una nueva categoría
+        Route::put('/categories/{id}', [CategoriesController::class, 'update']); // Actualizar una categoría existente
+        Route::delete('/categories/{id}', [CategoriesController::class, 'destroy']); // Eliminar una categoría existente
+        Route::get('/categories', [CategoriesController::class, 'index']); // Listar todas las categorías
 
-    // Rutas CRUD para Administrador (subcategorías)
-    Route::post('/subcategories', [SubcategoriesController::class, 'store']); // Crear una nueva subcategoría (solo administrador)
-    Route::put('/subcategories/{id}', [SubcategoriesController::class, 'update']); // Actualizar una subcategoría existente (solo administrador)
-    Route::delete('/subcategories/{id}', [SubcategoriesController::class, 'destroy']); // Eliminar una subcategoría existente (solo administrador)
-    Route::get('/subcategories', [SubcategoriesController::class, 'index']); // Listar todas las subcategorías (administrador)
-    Route::get('/subcategories/{id}', [SubcategoriesController::class, 'show']); // Obtener los detalles de una subcategoría específica (administrador)
+        // Rutas CRUD para Administrador (subcategorías)
+        Route::post('/subcategories', [SubcategoriesController::class, 'store']); // Crear una nueva subcategoría (solo administrador)
+        Route::put('/subcategories/{id}', [SubcategoriesController::class, 'update']); // Actualizar una subcategoría existente (solo administrador)
+        Route::delete('/subcategories/{id}', [SubcategoriesController::class, 'destroy']); // Eliminar una subcategoría existente (solo administrador)
+        Route::get('/subcategories', [SubcategoriesController::class, 'index']); // Listar todas las subcategorías (administrador)
+        Route::get('/subcategories/{id}', [SubcategoriesController::class, 'show']); // Obtener los detalles de una subcategoría específica (administrador)
 
-    // Facturas
-    Route::get('/invoice', [InvoiceController::class, 'index']); // Listar todas las facturas
-    Route::get('/invoice/{id}', [InvoiceController::class, 'show']); // Obtener los detalles de una factura específica
+        // Facturas
+        Route::get('/invoice', [InvoiceController::class, 'index']); // Listar todas las facturas
+        Route::get('/invoice/{id}', [InvoiceController::class, 'show']); // Obtener los detalles de una factura específica
+    });
+
+    // Middleware para rutas protegidas por roles de cliente
+    Route::middleware(['role:client'])->group(function () {
+        Route::get('/products', [ProductController::class, 'index']); // Ver productos
+        Route::post('/cart', [CartController::class, 'add']); // Agregar al carrito
+        Route::post('/purchase', [PurchaseController::class, 'makePurchase']); // Realizar compra
+    });
 });
 
 // Rutas para Roles y Permisos

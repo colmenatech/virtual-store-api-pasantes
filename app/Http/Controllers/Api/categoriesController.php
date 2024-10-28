@@ -9,6 +9,12 @@ use App\Models\Categories;
 
 class categoriesController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('role:admin')->except(['index', 'show']);
+        $this->middleware('role:client')->only(['index', 'show']);
+    }
+    
     // Array de mensajes
     private $messages = [
         'found' => ['message' => 'Categorías encontradas.', 'status' => 200], // Añadir mensaje de encontrado exitosamente
