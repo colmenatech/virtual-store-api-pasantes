@@ -23,6 +23,6 @@ class Categories extends Model
      //Relación del campo NameCategory con subcategories
     public function subcategories()
     {
-        return $this->hasMany(Subcategory::class, 'NameCategory', 'NameCategory');
+        return $this->hasMany(Subcategories::class, 'NameCategory', 'NameCategory');
     }
 }

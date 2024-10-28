@@ -14,22 +14,28 @@ class Products extends Model
         'Description',
         'Price',
         'Stock',
+
         'NameCategory', // Nombre de la categoría
         'NameSub', // Nombre de la subcategoría
         'ImageURL',
+
+        'NameCategory', // Actualizado aquí
+        'NameSub',
+        'ImageURL', // Añadir el nuevo campo aquí
+
         'Status'
     ];
 
     // Relación con la categoría
     public function category()
     {
-        return $this->belongsTo(Category::class, 'NameCategory', 'NameCategory');
+        return $this->belongsTo(Categories::class, 'NameCategory', 'NameCategory');
     }
 
     // Relación con la subcategoría
     public function subcategory()
     {
-        return $this->belongsTo(Subcategory::class, 'NameSub', 'NameSub');
+        return $this->belongsTo(Subcategories::class, 'NameSub', 'NameSub');
     }
 
 }
