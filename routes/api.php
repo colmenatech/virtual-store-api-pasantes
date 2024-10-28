@@ -3,7 +3,6 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\productController;
-use App\Http\Controllers\Api\usuariosController;
 use App\Http\Controllers\Api\categoriesController;
 use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\Api\InvoiceController;
@@ -46,6 +45,15 @@ Route::put("/products/{id}", [productController::class, "update"]);
   Route::get('/products/{id}', [productController::class, 'show']);
 //});
 
+// Grupo de rutas CRUD para Cliente
+//Route::group(['prefix' => 'client'], function ()
+ //{
+  // Ruta para listar todos los productos (cliente)
+  Route::get('/products', [productController::class, 'index']);
+
+  // Ruta para obtener los detalles de un producto específico (cliente)
+  Route::get('/products/{id}', [productController::class, 'show']);
+//});
 
 //ROLES Y PERMISOS
 
@@ -58,16 +66,6 @@ Route::post('/permissions', [RolePermissionController::class, 'createPermission'
 // Ruta para asignar permisos a un rol existente
 Route::post('/roles/assign-permissions', [RolePermissionController::class, 'assignPermissionToRole']);
 
-
-// Grupo de rutas CRUD para Cliente
-//Route::group(['prefix' => 'client'], function ()
- //{
-  // Ruta para listar todos los productos (cliente)
-  Route::get('/products', [productController::class, 'index']);
-
-  // Ruta para obtener los detalles de un producto específico (cliente)
-  Route::get('/products/{id}', [productController::class, 'show']);
-//});
 
 // Grupo de rutas CRUD para Administrador
 //Route::group(['prefix' => 'admin'], function () {
