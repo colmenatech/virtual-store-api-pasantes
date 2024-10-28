@@ -17,7 +17,7 @@ class categoriesController extends Controller
         'validation_error' => ['message' => 'Error en la validación de los datos.', 'status' => 400],
         'creation_error' => ['message' => 'Error al crear la categoría.', 'status' => 500],
         'deleted' => ['message' => 'Categoría eliminada exitosamente.', 'status' => 200], // Añadir mensaje de eliminado exitosamente
-        
+
 ];
 
 // MÉTODO PARA OBTENER TODAS LAS CATEGORÍAS

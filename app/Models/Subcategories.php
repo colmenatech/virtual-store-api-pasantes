@@ -12,6 +12,18 @@ class Subcategories extends Model
     protected $fillable = [
         'IdSubcategory',
         'NameSub',
-        'IdCategory'
+        'NameCategory'
     ];
+
+    //Relacion del campo NameSub de subcategories a la tabla products
+    public function products()
+    {
+        return $this->hasMany(Products::class, 'NameSub', 'NameSub');
+    }
+
+    //Relacion del campo NameCategory de categories a la tabla subcategories
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'NameCategory', 'NameCategory');
+    }
 }
