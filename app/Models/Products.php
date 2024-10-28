@@ -10,35 +10,26 @@ class Products extends Model
     protected $table = "products";
 
     protected $fillable = [
-<<<<<<< HEAD
-        "name",
-        "description",
-        "price",
-        "stock",
-        "category_id",
-        "status",
-    ];
-=======
-        'NameProduct',
+       'NameProduct',
         'Description',
         'Price',
         'Stock',
-       'NameCategory', // Actualizado aquí
-        'NameSub',
-        'ImageURL', // Añadir el nuevo campo aquí
+        'NameCategory', // Nombre de la categoría
+        'NameSub', // Nombre de la subcategoría
+        'ImageURL',
         'Status'
     ];
 
-    //Relación del campo NameCategory de la tabla categories a la de products
+    // Relación con la categoría
     public function category()
     {
         return $this->belongsTo(Category::class, 'NameCategory', 'NameCategory');
     }
 
-     //Relación del campo NameSub de la tabla categories a la de products
+    // Relación con la subcategoría
     public function subcategory()
     {
         return $this->belongsTo(Subcategory::class, 'NameSub', 'NameSub');
     }
->>>>>>> Crud-Api
+
 }

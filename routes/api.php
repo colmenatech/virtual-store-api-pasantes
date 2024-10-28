@@ -9,7 +9,6 @@ use App\Http\Controllers\Api\InvoiceController;
 use App\Http\Controllers\Api\subcategoriesController;
 use App\Http\Controllers\Api\imagesController;
 
-<<<<<<< HEAD
 Route::get("/products", [productController::class, "index"]);
 
 Route::get("/products/{id}", [productController::class, "show"]);
@@ -21,7 +20,7 @@ Route::delete("/products/{id}", [productController::class, "destroy"]); // Elimi
 Route::put("/products/{id}", [productController::class, "update"]);
 
 //Route::post('/products', [productController::class, 'checkout']); // Finalizar compra y generar factura
-=======
+
 
 //Productos
 
@@ -121,5 +120,3 @@ Route::put('/images/{id}', [imagesController::class, 'update']);
 // Definir la ruta para eliminar una imagen
 Route::delete('/images/{id}', [imagesController::class, 'destroy']);
 
-
->>>>>>> Crud-Api

@@ -40,7 +40,7 @@ return [
             "synchronous" => null,
         ],
 
-<<<<<<< HEAD
+
         "mysql" => [
             "driver" => "mysql",
             "url" => env("DB_URL"),
@@ -61,7 +61,7 @@ return [
                     PDO::MYSQL_ATTR_SSL_CA => env("MYSQL_ATTR_SSL_CA"),
                 ])
                 : [],
-=======
+
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DB_URL'),
@@ -80,7 +80,7 @@ return [
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
->>>>>>> Crud-Api
+
         ],
 
         "mariadb" => [
@@ -166,20 +166,20 @@ return [
     "redis" => [
         "client" => env("REDIS_CLIENT", "phpredis"),
 
-<<<<<<< HEAD
+
         "options" => [
             "cluster" => env("REDIS_CLUSTER", "redis"),
             "prefix" => env(
                 "REDIS_PREFIX",
                 Str::slug(env("APP_NAME", "laravel"), "_") . "_database_"
             ),
-=======
+
         'client' => env('REDIS_CLIENT', 'phpredis'),
 
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'redis'),
             'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '').'_database'),
->>>>>>> Crud-Api
+
         ],
 
         "default" => [
@@ -200,4 +200,6 @@ return [
             "database" => env("REDIS_CACHE_DB", "1"),
         ],
     ],
+]
+]
 ];
