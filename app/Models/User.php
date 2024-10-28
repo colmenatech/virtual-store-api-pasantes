@@ -6,7 +6,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+<<<<<<< HEAD
 use Spatie\Permission\Traits\HasRoles;
+=======
+use Spatie\Permission\Traits\HasRoles; //un trait es una forma de reusar código en múltiples clases
+>>>>>>> Crud-Api
 
 class User extends Authenticatable
 {

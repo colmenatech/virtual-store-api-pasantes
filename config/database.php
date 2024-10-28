@@ -40,6 +40,7 @@ return [
             "synchronous" => null,
         ],
 
+<<<<<<< HEAD
         "mysql" => [
             "driver" => "mysql",
             "url" => env("DB_URL"),
@@ -60,6 +61,26 @@ return [
                     PDO::MYSQL_ATTR_SSL_CA => env("MYSQL_ATTR_SSL_CA"),
                 ])
                 : [],
+=======
+        'mysql' => [
+            'driver' => 'mysql',
+            'url' => env('DB_URL'),
+            'host' => env('DB_HOST', 'localhost'),
+            'port' => env('DB_PORT', '3308'),
+            'database' => env('DB_DATABASE', 'tiendavirtual'),
+            'username' => env('DB_USERNAME', 'root'),
+            'password' => env('DB_PASSWORD', 'root'),
+            'unix_socket' => env('DB_SOCKET', ''),
+            'charset' => env('DB_CHARSET', 'utf8mb4'),
+            'collation' => env('DB_COLLATION', 'utf8mb4_unicode_ci'),
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => null,
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
+>>>>>>> Crud-Api
         ],
 
         "mariadb" => [
@@ -145,12 +166,20 @@ return [
     "redis" => [
         "client" => env("REDIS_CLIENT", "phpredis"),
 
+<<<<<<< HEAD
         "options" => [
             "cluster" => env("REDIS_CLUSTER", "redis"),
             "prefix" => env(
                 "REDIS_PREFIX",
                 Str::slug(env("APP_NAME", "laravel"), "_") . "_database_"
             ),
+=======
+        'client' => env('REDIS_CLIENT', 'phpredis'),
+
+        'options' => [
+            'cluster' => env('REDIS_CLUSTER', 'redis'),
+            'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '').'_database'),
+>>>>>>> Crud-Api
         ],
 
         "default" => [

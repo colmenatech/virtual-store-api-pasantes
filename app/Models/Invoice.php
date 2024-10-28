@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class shoppingcart extends Model
+class Invoice extends Model
 {
-    protected $table = 'shoppingcart';
+    protected $table = 'invoice';
 
     protected $fillable = [
-        'id',
-        'user_id',
-        'product_id',
-        'quantity'
+        'IdInvoice',
+        'IdUser',
+        'Total',
+        'CreatedAt'
     ];
 }
