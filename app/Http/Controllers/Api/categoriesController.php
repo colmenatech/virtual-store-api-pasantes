@@ -80,10 +80,7 @@ public function index()
 
         // Verificar si la categoría no se encuentra
         if (!$category) {
-            $data = [
-                'message' => 'Categoría no encontrada',
-                'status' => 404
-            ];
+            $data = $this->messages['not_found'];
             // Retornar respuesta de error en formato JSON con código 404 Not Found
             return response()->json($data, 404);
         }
@@ -95,11 +92,7 @@ public function index()
 
         // Verificar si la validación falla
         if ($validator->fails()) {
-            $data = [
-                'message' => 'Error en la validación de los datos',
-                'errors' => $validator->errors(),
-                'status' => 400
-            ];
+            $data = array_merge($this->messages['validation_error'], ['errors' => $validator->errors()]);
             // Retornar respuesta de error en formato JSON con código 400 Bad Request
             return response()->json($data, 400);
         }
@@ -132,10 +125,13 @@ public function index()
             return response()->json($this->messages['not_found'], 404);
         }
 
-        // Eliminar la categoría encontrada
-        $category->delete();
-
-        // Retornar respuesta JSON con mensaje de éxito y código de estado 200
-        return response()->json($this->messages['deleted'], 200);
+        // Verificar si se encuentra el producto antes de eliminar
+        if ($category) {
+            // Eliminar el producto encontrado
+            $category->delete();
+            
+            // Retornar respuesta JSON con mensaje de éxito y código de estado 200
+            return response()->json($this->messages['deleted'], 200);
+        }
     }
 }

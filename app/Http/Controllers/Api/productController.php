@@ -14,14 +14,14 @@ class productController extends Controller
         'not_found' => ['message' => 'No se encontró el producto.', 'status' => 404],
         'found' => ['message' => 'Producto encontrado.', 'status' => 200],
         'validation_error' => ['message' => 'Error en la validación de los datos.', 'status' => 400],
-        'created' => ['message' => 'Categoría creada exitosamente.', 'status' => 201],
+        'created' => ['message' => 'Producto creado exitosamente.', 'status' => 201],
         'creation_error' => ['message' => 'Error al crear el producto.', 'status' => 500],
         'deleted' => ['message' => 'Producto eliminado exitosamente.', 'status' => 200], // Añadir mensaje de eliminado exitosamente
 
     ];
 
 
-   // ADMINISTRADOR
+// ADMINISTRADOR
 // Método para obtener todos los productos
 public function index()
 {
@@ -31,12 +31,11 @@ public function index()
     if ($products->isEmpty()) {
         return response()->json($this->messages['not_found'], 404);
     }
-// Preparar y retornar respuesta JSON con los productos encontrados y mensaje de éxito
+    // Preparar y retornar respuesta JSON con los productos encontrados y mensaje de éxito
    return response()->json([
     'message' => $this->messages['found']['message'], // Mensaje de éxito
     'products' => $products, // Lista de categorías encontradas
-    'status' => $this->messages['found']['status'], // Código de estado 200
-], 200);
+    'status' => $this->messages['found']['status']], 200);
 }
 
 
@@ -85,23 +84,25 @@ public function store(Request $request)
 
 
      // Método para eliminar un producto
-    // MÉTODO PARA ELIMINAR UNA CATEGORÍA
     public function destroy($id)
     {
-        // Buscar la categoría por ID
+        // Buscarel producto por ID
         $product = Products::find($id);
 
-        // Verificar si la categoría no se encuentra
+        // Verificar si el producto no se encuentra
         if (!$product) {
-            // Retornar respuesta JSON con mensaje de "No se encontró la categoría" y código de estado 404
+            // Retornar respuesta JSON con mensaje de "No se encontró el producto" y código de estado 404
             return response()->json($this->messages['not_found'], 404);
         }
 
-        // Eliminar la categoría encontrada
-        $product->delete();
-
-        // Retornar respuesta JSON con mensaje de éxito y código de estado 200
-        return response()->json($this->messages['deleted'], 200);
+         // Verificar si se encuentra el producto antes de eliminar
+        if ($product) {
+            // Eliminar el producto encontrado
+            $product->delete();
+            
+            // Retornar respuesta JSON con mensaje de éxito y código de estado 200
+            return response()->json($this->messages['deleted'], 200);
+        }
     }
 
 
@@ -180,18 +181,15 @@ public function indexcliente()
 {
     // Obtener todos los productos
     $products = Products::all(); // Eliminamos la relación 'with('image')'
-
     // Verificar si no se encontraron productos
     if ($products->isEmpty()) {
         return response()->json($this->messages['not_found'], 404);
     }
-
     // Preparar y retornar respuesta JSON con los productos encontrados y mensaje de éxito
-    return response()->json([
-        'message' => $this->messages['found']['message'], // Mensaje de éxito
-        'products' => $products, // Lista de categorías encontradas
-        'status' => $this->messages['found']['status'], // Código de estado 200
-    ], 200);
+   return response()->json([
+    'message' => $this->messages['found']['message'], // Mensaje de éxito
+    'products' => $products, // Lista de categorías encontradas
+    'status' => $this->messages['found']['status']], 200);
 }
 
 }
