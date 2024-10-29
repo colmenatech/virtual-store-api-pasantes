@@ -6,11 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-<<<<<<< HEAD
 use Spatie\Permission\Traits\HasRoles; //un trait es una forma de reusar código en múltiples clases
-=======
-use Spatie\Permission\Traits\HasRoles;
->>>>>>> 2237ad18e46a66d1c11e5f63203e015a6cb01dd9
 
 
 class User extends Authenticatable

@@ -54,20 +54,20 @@ public function store(Request $request)
         'Status' => 'required'
     ]);
 
-<<<<<<< HEAD
+
     // Verificar si la validación falla
     if ($validator->fails()) {
         return response()->json(['message' => 'Error en la validación de los datos.', 'errors' => $validator->errors(), 'status' => 400], 400);
         return response()->json($this->messages['found'], 200);
 
     }
-=======
+
    // Verificar si la validación falla
    if ($validator->fails()) {
     // Retornar respuesta de error en formato JSON con el mensaje de validación de datos
     return response()->json(array_merge($this->messages['validation_error'], ['errors' => $validator->errors()]), 400);
 }
->>>>>>> 2237ad18e46a66d1c11e5f63203e015a6cb01dd9
+
 
     // Crear un nuevo producto con los datos validados
     $product = Products::create([
@@ -108,7 +108,7 @@ public function store(Request $request)
         if ($product) {
             // Eliminar el producto encontrado
             $product->delete();
-            
+
             // Retornar respuesta JSON con mensaje de éxito y código de estado 200
             return response()->json($this->messages['deleted'], 200);
         }
