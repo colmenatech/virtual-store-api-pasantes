@@ -35,7 +35,7 @@ public function index()
 }
 
 
-<<<<<<< HEAD
+
 public function store(Request $request)
 {
     // Validar los datos recibidos en la solicitud
@@ -53,9 +53,8 @@ public function store(Request $request)
     // Verificar si la validación falla
     if ($validator->fails()) {
         return response()->json(['message' => 'Error en la validación de los datos.', 'errors' => $validator->errors(), 'status' => 400], 400);
-=======
         return response()->json($this->messages['found'], 200);
->>>>>>> Crud-Api
+
     }
 
     // Crear un nuevo producto con los datos validados

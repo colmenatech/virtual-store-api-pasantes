@@ -4,18 +4,17 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('invoice', function (Blueprint $table) {
-            $table->integer('IdInvoice', true);
-            $table->integer('IdUser');
-            $table->decimal('Total', 65, 0);
-            $table->dateTime('CreatedAt', 6);
+        Schema::create('invoices', function (Blueprint $table) {
+            $table->increments('IdInvoice'); // Llave primaria
+            $table->integer('IdUser')->unsigned();
+            $table->decimal('Total', 8, 2); // Asegurarse de que el tamaño decimal esté correcto
+            $table->timestamps(); // Añadir los campos created_at y updated_at
         });
     }
 
@@ -24,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('invoice');
+        Schema::dropIfExists('invoices');
     }
 };

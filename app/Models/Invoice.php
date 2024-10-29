@@ -15,4 +15,9 @@ class Invoice extends Model
         'Total',
         'CreatedAt'
     ];
+
+    public function detailinvoices()
+    {
+        return $this->hasMany(DetailInvoice::class, 'IdInvoice');
+    }
 }

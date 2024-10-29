@@ -4,19 +4,19 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
         Schema::create('detailinvoice', function (Blueprint $table) {
-            $table->integer('IdDetail', true);
-            $table->integer('IdInvoice');
-            $table->integer('IdProduct');
+            $table->increments('IdDetail'); // Llave primaria
+            $table->integer('IdInvoice')->unsigned();
+            $table->integer('IdProduct')->unsigned();
             $table->integer('Quantity');
-            $table->decimal('Price', 65, 0);
+            $table->decimal('Price', 8, 2); // Asegurarse de que el tamaño decimal esté correcto
+            $table->timestamps(); // Añadir los campos created_at y updated_at
         });
     }
 
