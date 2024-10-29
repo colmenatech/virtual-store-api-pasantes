@@ -99,11 +99,14 @@ class subcategoriesController extends Controller
             return response()->json($this->messages['not_found'], 404);
         }
 
-        // Eliminar la subcategoría encontrada
-        $subcategory->delete();
-
-        // Retornar respuesta JSON con mensaje de éxito y código de estado 200
-        return response()->json($this->messages['deleted'], 200);
+         // Verificar si se encuentra el producto antes de eliminar
+        if ($subcategory) {
+            // Eliminar el producto encontrado
+            $subcategory->delete();
+            
+            // Retornar respuesta JSON con mensaje de éxito y código de estado 200
+            return response()->json($this->messages['deleted'], 200);
+        }
     }
 
 
@@ -112,7 +115,7 @@ class subcategoriesController extends Controller
     $subcategory = Subcategories::find($id);
 
     if (!$subcategory) {
-        return response()->json(['message' => 'Subcategoría no encontrada.', 'status' => 404], 404);
+        return response()->json($this->messages['not_found'], 404);
     }
 
     $validator = Validator::make($request->all(), [
@@ -121,7 +124,7 @@ class subcategoriesController extends Controller
     ]);
 
     if ($validator->fails()) {
-        return response()->json(['message' => 'Error en la validación de los datos.', 'errors' => $validator->errors(), 'status' => 400], 400);
+        return response()->json(array_merge($this->messages['validation_error'], ['errors' => $validator->errors()]), 400);
     }
 
     $subcategory->update([
