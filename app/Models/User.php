@@ -14,6 +14,7 @@ use Spatie\Permission\Traits\HasRoles; //un trait es una forma de reusar código
 // Clase User que extiende de Authenticatable, permitiendo autenticación
 class User extends Authenticatable
 {
+    use HasRoles;
     use HasApiTokens, HasFactory, Notifiable; // Traits usados para diversas funcionalidades
 
     // Especifica el nombre de la tabla asociada con el modelo

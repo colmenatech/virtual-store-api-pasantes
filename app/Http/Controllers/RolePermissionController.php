@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\assignRole;
 use App\Models\User; // Importa el modelo User
 
 class RolePermissionController extends Controller
@@ -53,7 +54,7 @@ class RolePermissionController extends Controller
         $role = Role::where('name', $request->role_name)->firstOrFail();
 
         // Asignar los permisos al rol
-        $role->syncPermissions($request->permissions);
+        $role->syncPermissions($request->permission);
 
         // Retornar una respuesta JSON indicando que los permisos fueron asignados exitosamente
         return response()->json(['message' => 'Permissions assigned to role successfully']);
@@ -90,7 +91,7 @@ class RolePermissionController extends Controller
     {
         $permissions = Permission::all(); // Obtener todos los permisos
 
-        return response()->json(['permissions' => $permissions]);
+        return response()->json(['permission' => $permission]);
     }
 
     // Método para asignar un rol a un usuario

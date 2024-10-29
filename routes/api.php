@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
@@ -61,7 +60,11 @@ Route::middleware([EnsureFrontendRequestsAreStateful::class, 'auth:sanctum'])->g
 });
 
 // Rutas para Roles y Permisos
-Route::post('/roles', [RolePermissionController::class, 'createRole']); // Crear un nuevo rol
-Route::post('/permissions', [RolePermissionController::class, 'createPermission']); // Crear un nuevo permiso
-Route::post('/roles/assign-permissions', [RolePermissionController::class, 'assignPermissionToRole']); // Asignar permisos
-Route::post('/assign-role', [RolePermissionController::class, 'assignRole'])->middleware('auth:sanctum', 'role:admin');
+Route::post('/roles', [RolePermissionController::class, 'createRole']);
+Route::post('/permissions', [RolePermissionController::class, 'createPermission']);
+Route::post('/assign-permissions', [RolePermissionController::class, 'assignPermissionToRole']);
+Route::delete('/roles/{id}', [RolePermissionController::class, 'deleteRole']);
+Route::delete('/permissions/{id}', [RolePermissionController::class, 'deletePermission']);
+Route::get('/roles', [RolePermissionController::class, 'getAllRoles']);
+Route::get('/permissions', [RolePermissionController::class, 'getAllPermissions']);
+Route::post('/assign-role', [RolePermissionController::class, 'assignRole']);
