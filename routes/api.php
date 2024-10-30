@@ -78,7 +78,7 @@ Route::post('/roles/assign-permissions', [RolePermissionController::class, 'assi
   Route::get('/invoice/{id}', [InvoiceController::class, 'show']);
 
 
-  //SUBCATEGORÍAS
+  //SUBCATEGORÍAunS
   // Rutas CRUD para Subcategorías
 //Route::group(['prefix' => 'admin'], function () {
   Route::post('/subcategories', [subcategoriesController::class, 'store']);

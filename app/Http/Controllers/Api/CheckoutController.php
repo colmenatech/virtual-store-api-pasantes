@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Products; // Asegúrate de que esto esté correcto
 use App\Models\Invoice;
 use App\Models\DetailInvoice;
+use Illuminate\Support\Facades\DB; // Importar la fachada DB
 
 class CheckoutController extends Controller
 {
@@ -29,8 +30,7 @@ class CheckoutController extends Controller
             // Recorrer los productos del carrito
             foreach ($request->products as $item) {
                 // Buscar el producto por su ID
-                $products = Products::find($item['product_id']); // Asegúrate de que esto esté correcto
-
+                $products = Products::find($item['product_id']);
                 // Verificar si el producto existe
                 if (!$products) {
                     return response()->json(['message' => 'Producto no encontrado', 'status' => 404], 404);
@@ -55,7 +55,7 @@ class CheckoutController extends Controller
             // Crear detalles de factura y actualizar stock
             foreach ($request->products as $item) {
                 // Buscar el producto por su ID
-                $products = Products::find($item['product_id']); // Asegúrate de que esto esté correcto
+                $products = Products::find($item['product_id']);
                 $products->Stock -= $item['quantity']; // Descontar el stock del producto
                 $products->save();
 
