@@ -54,4 +54,8 @@ Route::get('/subcategories', [SubcategoriesController::class, 'index']); // List
 Route::get('/subcategories/{id}', [SubcategoriesController::class, 'show']); // Obtener los detalles de una subcategoría específica
 
 // Rutas para compras
+
+
+// Rutas para compras
 Route::post('/checkout', [CheckoutController::class, 'checkout']); // Realizar una compra
+Route::get('/checkout/{id}', [CheckoutController::class, 'getInvoiceById']); // Obtener una factura específica

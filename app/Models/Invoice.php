@@ -7,13 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Invoice extends Model
 {
-    protected $table = 'invoice';
+    use HasFactory;
 
+    protected $table = 'invoice';
+    protected $primaryKey = 'IdInvoice'; // Asegúrate de definir la clave primaria
     protected $fillable = [
         'IdInvoice',
         'IdUser',
         'Total',
-        'CreatedAt'
+        'created_at',
+        'updated_at',
     ];
 
     public function detailinvoices()
@@ -21,3 +24,4 @@ class Invoice extends Model
         return $this->hasMany(DetailInvoice::class, 'IdInvoice');
     }
 }
+
