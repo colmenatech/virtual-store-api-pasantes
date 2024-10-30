@@ -7,6 +7,8 @@ use App\Http\Controllers\Api\categoriesController;
 use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\Api\InvoiceController;
 use App\Http\Controllers\Api\subcategoriesController;
+use App\Http\Controllers\Api\CheckoutController; //Control de compras
+
 
 //Productos
 
@@ -85,3 +87,7 @@ Route::post('/roles/assign-permissions', [RolePermissionController::class, 'assi
   Route::get('/subcategories', [subcategoriesController::class, 'index']);
   Route::get('/subcategories/{id}', [subcategoriesController::class, 'show']);
 //});
+
+
+//COMPRAS
+Route::post('/checkout', [CheckoutController::class, 'checkout']);

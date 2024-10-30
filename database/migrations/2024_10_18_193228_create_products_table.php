@@ -10,23 +10,16 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create("products", function (Blueprint $table) {
-            $table->id();
-
-            $table->string("name");
-            $table->string("description");
-            $table->string("price");
-            $table->string("stock");
-            $table->string("category_id");
-            $table->string("status");
-            $table->string('NameProduct');
-            $table->string('Description');
-            $table->string('Price');
-            $table->string('Stock');
-            $table->string('NameCategory');
-            $table->string('NameSub');
-            $table->string('Status');
-            $table->timestamps();
+        Schema::create('products', function (Blueprint $table) {
+            $table->id(); // Llave primaria
+            $table->string('NameProduct'); // Nombre del producto
+            $table->string('Description'); // Descripción del producto
+            $table->decimal('Price', 8, 2); // Precio del producto
+            $table->integer('Stock'); // Stock del producto
+            $table->string('NameCategory'); // Nombre de la categoría
+            $table->string('NameSub'); // Nombre de la subcategoría
+            $table->string('Status'); // Estado del producto
+            $table->timestamps(); // Campos created_at y updated_at
         });
     }
 
@@ -35,6 +28,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists("products");
+        Schema::dropIfExists('products');
     }
 };
