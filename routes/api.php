@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\productController;
@@ -8,7 +7,8 @@ use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\Api\InvoiceController;
 use App\Http\Controllers\Api\subcategoriesController;
 use App\Http\Controllers\Api\CheckoutController; //Control de compras
-
+use App\Http\Controllers\Api\AuthController;
+use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 
 //Productos
 
@@ -91,3 +91,14 @@ Route::post('/roles/assign-permissions', [RolePermissionController::class, 'assi
 
 //COMPRAS
 Route::post('/checkout', [CheckoutController::class, 'checkout']);
+
+
+
+
+//Roles y permisos
+Route::post('/assign-permissions', [RolePermissionController::class, 'assignPermissionToRole']);
+Route::delete('/roles/{id}', [RolePermissionController::class, 'deleteRole']);
+Route::delete('/permissions/{id}', [RolePermissionController::class, 'deletePermission']);
+Route::get('/roles', [RolePermissionController::class, 'getAllRoles']);
+Route::get('/permissions', [RolePermissionController::class, 'getAllPermissions']);
+Route::post('/assign-role', [RolePermissionController::class, 'assignRole']);

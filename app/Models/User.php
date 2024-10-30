@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+// use Illuminate\Contracts\Auth\MustVerifyEmail; // Comentado, se usaría para verificar el email del usuario
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles; //un trait es una forma de reusar código en múltiples clases
-
 
 class User extends Authenticatable
 {
@@ -41,4 +42,5 @@ class User extends Authenticatable
             "password" => "hashed",
         ];
     }
+
 }
