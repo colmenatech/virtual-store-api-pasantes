@@ -9,11 +9,11 @@ use App\Models\Products;
 
 class productController extends Controller
 {
-    public function __construct()
+    /*public function __construct()
     {
         $this->middleware('role:admin')->except(['index', 'show']);
         $this->middleware('role:client')->only(['index', 'show']);
-    }
+    }*/
 
     private $messages = [
         'not_found' => ['message' => 'No se encontró el producto.', 'status' => 404],
