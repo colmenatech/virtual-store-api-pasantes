@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Products; // Asegúrate de que esto esté correcto
 use App\Models\Invoice;
 use App\Models\DetailInvoice;
+use Illuminate\Support\Facades\DB; // Importar la fachada DB
 
 class CheckoutController extends Controller
 {
@@ -21,7 +22,7 @@ class CheckoutController extends Controller
         ]);
 
         // Iniciar una transacción de base de datos para asegurar que todas las operaciones se completen exitosamente
-        \DB::beginTransaction();
+        DB::beginTransaction();
         try {
             // Inicializar el total de la compra
             $total = 0;
@@ -39,7 +40,7 @@ class CheckoutController extends Controller
                 // Verificar si hay suficiente stock para el producto
                 if ($products->Stock < $item['quantity']) {
                     // Si no hay suficiente stock, retornar una respuesta de error
-                    return response()->json(['message' => 'Stock insuficiente para el producto ' . $product->NameProduct], 400);
+                    return response()->json(['message' => 'Stock insuficiente para el producto ' . $products->NameProduct], 400);
                 }
 
                 // Calcular el total acumulando el precio del producto por la cantidad comprada
@@ -69,13 +70,13 @@ class CheckoutController extends Controller
             }
 
             // Confirmar transacción
-            \DB::commit();
+            DB::commit();
 
             // Enviar la factura en formato JSON al frontend
             return response()->json(['message' => 'Compra finalizada y factura generada.', 'invoice' => $invoice, 'details' => $invoice->detailinvoices], 201);
         } catch (\Exception $e) {
             // Revertir transacción en caso de error
-            \DB::rollBack();
+            DB::rollBack();
             return response()->json(['message' => 'Error al procesar la compra.', 'error' => $e->getMessage()], 500);
         }
     }
