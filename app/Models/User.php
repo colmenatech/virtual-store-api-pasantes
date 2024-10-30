@@ -13,8 +13,8 @@ use Spatie\Permission\Traits\HasRoles; //un trait es una forma de reusar código
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
-    use HasRoles;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles; // Incluye HasApiTokens aquí
+
 
     /**
      * The attributes that are mass assignable.

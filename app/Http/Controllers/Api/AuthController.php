@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    
+
     public function register(Request $request)
 {
     // Validación de los datos de entrada
@@ -53,27 +53,33 @@ class AuthController extends Controller
     return response()->json(['message' => 'Usuario registrado exitosamente.', 'user' => $user, 'status' => Response::HTTP_CREATED], Response::HTTP_CREATED);
 }
 
-    // Método para iniciar sesión
-    public function login(Request $request) {
-        // Validación de las credenciales de entrada
-        $credentials = $request->validate([
-            'email' => ['required', 'email'], // El email es requerido y debe ser un email válido
-            'password' => ['required'] // La contraseña es requerida
-        ]);
 
-        // Intento de autenticación
-        if (Auth::attempt($credentials)) { // Verifica si las credenciales son correctas
-            $user = Auth::user(); // Obtiene el usuario autenticado
-            $token = $user->createToken('token')->plainTextToken; // Crea un token de acceso y lo convierte a texto plano
-            $cookie = cookie('cookie_token', $token, 60 * 24); // (Opcional) Crea una cookie con el token que dura 24 horas
+public function login(Request $request)
+{
+    // Validación de las credenciales de entrada
+    $credentials = $request->validate([
+        'email' => ['required', 'email'], // El email es requerido y debe ser un email válido
+        'password' => ['required'] // La contraseña es requerida
+    ]);
 
-            // Respuesta exitosa con el token generado
-            return response(["token" => $token], Response::HTTP_OK)->withCookie($cookie); // Devuelve el token en la respuesta con una cookie
-        } else {
-            // Respuesta de error si las credenciales son inválidas
-            return response(["message" => "Credenciales inválidas"], Response::HTTP_UNAUTHORIZED); // Devuelve una respuesta de error con el código 401 (Unauthorized)
-        }
+    // Intento de autenticación
+    if (Auth::attempt($credentials)) {
+        $user = Auth::user(); // Obtiene el usuario autenticado
+
+        // Crea un token de acceso y lo convierte a texto plano
+        $token = $user->createToken('token')->plainTextToken;
+
+        // (Opcional) Crea una cookie con el token que dura 24 horas
+        $cookie = cookie('cookie_token', $token, 60 * 24);
+
+        // Respuesta exitosa con el token generado
+        return response(["token" => $token], Response::HTTP_OK)->withCookie($cookie);
+    } else {
+        // Respuesta de error si las credenciales son inválidas
+        return response(["message" => "Credenciales inválidas"], Response::HTTP_UNAUTHORIZED);
     }
+}
+
 
     // Método para obtener el perfil del usuario autenticado
     public function userProfile(Request $request) {
