@@ -95,6 +95,7 @@ public function store(Request $request)
      // Método para eliminar un producto
     public function destroy($id)
     {
+        
         // Buscarel producto por ID
         $product = Products::find($id);
 
