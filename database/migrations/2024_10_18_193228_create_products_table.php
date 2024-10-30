@@ -10,6 +10,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
+        if (!Schema::hasTable('products')) {
         Schema::create('products', function (Blueprint $table) {
             $table->id(); // Llave primaria
             $table->string('NameProduct'); // Nombre del producto
@@ -21,6 +22,7 @@ return new class extends Migration {
             $table->string('Status'); // Estado del producto
             $table->timestamps(); // Campos created_at y updated_at
         });
+    }
     }
 
     /**

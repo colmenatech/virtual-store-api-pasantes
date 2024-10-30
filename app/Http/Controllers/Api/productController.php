@@ -9,6 +9,11 @@ use App\Models\Products;
 
 class productController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('role:admin')->except(['index', 'show']);
+        $this->middleware('role:client')->only(['index', 'show']);
+    }
 
     private $messages = [
         'not_found' => ['message' => 'No se encontró el producto.', 'status' => 404],
@@ -95,6 +100,7 @@ public function store(Request $request)
      // Método para eliminar un producto
     public function destroy($id)
     {
+        
         // Buscarel producto por ID
         $product = Products::find($id);
 
