@@ -55,3 +55,4 @@ Route::get('/subcategories/{id}', [SubcategoriesController::class, 'show']); // 
 
 // Rutas para compras
 Route::post('/checkout', [CheckoutController::class, 'checkout']); // Realizar una compra
+

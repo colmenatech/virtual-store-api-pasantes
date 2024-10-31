@@ -91,7 +91,7 @@ class RolePermissionController extends Controller
     {
         $permissions = Permission::all(); // Obtener todos los permisos
 
-        return response()->json(['permission' => $permission]);
+        return response()->json(['permission' => $permissions]);
     }
 
     // Método para asignar un rol a un usuario

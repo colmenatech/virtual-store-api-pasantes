@@ -14,15 +14,9 @@ class Products extends Model
         'Description',
         'Price',
         'Stock',
-
         'NameCategory', // Nombre de la categoría
         'NameSub', // Nombre de la subcategoría
         'ImageURL',
-
-        'NameCategory', // Actualizado aquí
-        'NameSub',
-        'ImageURL', // Añadir el nuevo campo aquí
-
         'Status'
     ];
 
