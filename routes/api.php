@@ -24,15 +24,17 @@ Route::middleware([EnsureFrontendRequestsAreStateful::class, 'auth:sanctum'])->g
     Route::post('logout', [AuthController::class, 'logout']); // Cierre de sesión del usuario
     Route::get('users', [AuthController::class, 'allUsers']); // Muestra una lista de todos los usuarios
 
+    Route::get('/products', [ProductController::class, 'index']); // Listar todos los productos
+    Route::get('/products/{id}', [ProductController::class, 'show']); // Obtener los detalles de un producto específico
+
+
     // Middleware para rutas protegidas por roles de administrador
     Route::middleware(['role:admin'])->group(function () {
         // Rutas CRUD para Administradores (productos)
         Route::post('/products', [ProductController::class, 'store']); // Crear un nuevo producto
         Route::put('/products/{id}', [ProductController::class, 'update']); // Actualizar un producto existente
         Route::delete('/products/{id}', [ProductController::class, 'destroy']); // Eliminar un producto existente
-        Route::get('/products', [ProductController::class, 'index']); // Listar todos los productos
-        Route::get('/products/{id}', [ProductController::class, 'show']); // Obtener los detalles de un producto específico
-
+        
         // Rutas CRUD para Administradores (categorías)
         Route::post('/categories', [CategoriesController::class, 'store']); // Crear una nueva categoría
         Route::put('/categories/{id}', [CategoriesController::class, 'update']); // Actualizar una categoría existente
@@ -53,8 +55,8 @@ Route::middleware([EnsureFrontendRequestsAreStateful::class, 'auth:sanctum'])->g
 
     // Middleware para rutas protegidas por roles de cliente
     Route::middleware(['role:client'])->group(function () {
-        Route::get('/products', [ProductController::class, 'index']); // Ver productos
-        Route::get('/products/{id}', [ProductController::class, 'show']); // Ver detalles de un producto específico
+       // Route::get('/products', [ProductController::class, 'index']); // Ver productos
+       //Route::get('/products/{id}', [ProductController::class, 'show']); // Ver detalles de un producto específico
         //Route::post('/cart', [CartController::class, 'add']); // Agregar al carrito
        // Route::post('/purchase', [PurchaseController::class, 'makePurchase']); // Realizar compra
     });
