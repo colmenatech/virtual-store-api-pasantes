@@ -17,7 +17,6 @@ return new class extends Migration {
             $table->string('Description'); // Descripción del producto
             $table->decimal('Price', 8, 2); // Precio del producto
             $table->integer('Stock'); // Stock del producto
-            $table->string('NameCategory'); // Nombre de la categoría
             $table->string('NameSub'); // Nombre de la subcategoría
             $table->string('Status'); // Estado del producto
             $table->timestamps(); // Campos created_at y updated_at

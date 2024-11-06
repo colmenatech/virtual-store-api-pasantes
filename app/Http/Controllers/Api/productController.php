@@ -51,7 +51,7 @@ public function store(Request $request)
         'Description' => 'required',
         'Price' => 'required|max:10',
         'Stock' => 'required',
-        'NameCategory' => 'required|string|exists:categories,NameCategory',
+        //'NameCategory' => 'required|string|exists:categories,NameCategory',
         'NameSub' => 'required|string|exists:subcategories,NameSub',
         'ImageURL' => 'required|url',
         'Status' => 'required'
@@ -78,7 +78,7 @@ public function store(Request $request)
         'Description' => $request->Description,
         'Price' => $request->Price,
         'Stock' => $request->Stock,
-        'NameCategory' => $request->NameCategory,
+        //'NameCategory' => $request->NameCategory,
         'NameSub' => $request->NameSub,
         'ImageURL' => $request->ImageURL,
         'Status' => $request->Status
@@ -98,7 +98,7 @@ public function store(Request $request)
      // Método para eliminar un producto
     public function destroy($id)
     {
-        
+
         // Buscarel producto por ID
         $product = Products::find($id);
 
@@ -141,7 +141,7 @@ public function update(Request $request, $id)
         'Description' => 'required|string',
         'Price' => 'required|numeric',
         'Stock' => 'required|integer',
-        'NameCategory' => 'required|string|exists:categories,NameCategory',
+       // 'NameCategory' => 'required|string|exists:categories,NameCategory',
         'NameSub' => 'required|string|exists:subcategories,NameSub',
         'ImageURL' => 'required|url',
         'Status' => 'required|string',
@@ -158,7 +158,7 @@ public function update(Request $request, $id)
         'Description' => $request->Description,
         'Price' => $request->Price,
         'Stock' => $request->Stock,
-        'NameCategory' => $request->NameCategory,
+       // 'NameCategory' => $request->NameCategory,
         'NameSub' => $request->NameSub,
         'ImageURL' => $request->ImageURL,
         'Status' => $request->Status,
