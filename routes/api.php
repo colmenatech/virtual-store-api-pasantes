@@ -24,8 +24,8 @@ Route::middleware([EnsureFrontendRequestsAreStateful::class, 'auth:sanctum'])->g
     Route::post('logout', [AuthController::class, 'logout']); // Cierre de sesión del usuario
     Route::get('users', [AuthController::class, 'allUsers']); // Muestra una lista de todos los usuarios
 
-    Route::get('/products', [ProductController::class, 'index']); // Listar todos los productos
-    Route::get('/products/{id}', [ProductController::class, 'show']); // Obtener los detalles de un producto específico
+    Route::get('user-profile/products', [ProductController::class, 'index']); // Listar todos los productos
+    Route::get('user-profile/products/{id}', [ProductController::class, 'show']); // Obtener los detalles de un producto específico
 
 
     // Middleware para rutas protegidas por roles de administrador
