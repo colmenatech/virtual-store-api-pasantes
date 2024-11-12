@@ -31,10 +31,10 @@ Route::middleware([EnsureFrontendRequestsAreStateful::class, 'auth:sanctum'])->g
     // Middleware para rutas protegidas por roles de administrador
     Route::middleware(['role:admin'])->group(function () {
         // Rutas CRUD para Administradores (productos)
-        Route::post('/products', [ProductController::class, 'store']); // Crear un nuevo producto
-        Route::put('/products/{id}', [ProductController::class, 'update']); // Actualizar un producto existente
-        Route::delete('/products/{id}', [ProductController::class, 'destroy']); // Eliminar un producto existente
-        
+        Route::post('user-profile/products', [ProductController::class, 'store']); // Crear un nuevo producto
+        Route::put('user-profile/products/{id}', [ProductController::class, 'update']); // Actualizar un producto existente
+        Route::delete('user-profile/products/{id}', [ProductController::class, 'destroy']); // Eliminar un producto existente
+
         // Rutas CRUD para Administradores (categorías)
         Route::post('/categories', [CategoriesController::class, 'store']); // Crear una nueva categoría
         Route::put('/categories/{id}', [CategoriesController::class, 'update']); // Actualizar una categoría existente

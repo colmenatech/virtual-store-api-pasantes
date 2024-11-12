@@ -14,7 +14,7 @@ class subcategoriesController extends Controller
         $this->middleware('role:admin')->except(['index', 'show']);
         $this->middleware('role:client')->only(['index', 'show']);
     }*/
-    
+
     // Array de mensajes
     private $messages = [
         'not_found' => ['message' => 'No se encontró la subcategoría.', 'status' => 404],
@@ -70,7 +70,7 @@ class subcategoriesController extends Controller
     {
         // Validar los datos del request
         $validator = Validator::make($request->all(), [
-            'NameSub' => 'required|string|max:50', // Asegúrate de que el campo sea el mismo que en tu solicitud
+            'name' => 'required|string|max:50', // Asegúrate de que el campo sea el mismo que en tu solicitud
         ]);
 
         // Verificar si la validación falla
@@ -80,8 +80,8 @@ class subcategoriesController extends Controller
 
         // Crear la nueva subcategoría
         $subcategory = Subcategories::create([
-            'NameSub' => $request->NameSub, // Asegúrate de que el campo sea el mismo que en tu solicitud
-            'NameCategory' => $request->NameCategory, //El campo del nombre de la categoria es requerido
+            'name' => $request->name, // Asegúrate de que el campo sea el mismo que en tu solicitud
+            'category_id' => $request->category_id,  //El campo del id de la categoria es requerido
         ]);
 
         // Verificar si la creación falla
@@ -109,7 +109,7 @@ class subcategoriesController extends Controller
         if ($subcategory) {
             // Eliminar el producto encontrado
             $subcategory->delete();
-            
+
             // Retornar respuesta JSON con mensaje de éxito y código de estado 200
             return response()->json($this->messages['deleted'], 200);
         }
@@ -125,8 +125,8 @@ class subcategoriesController extends Controller
     }
 
     $validator = Validator::make($request->all(), [
-        'NameSub' => 'required|string|max:255',
-        'NameCategory' => 'required|string|exists:categories,NameCategory',
+        'name' => 'required|string|max:255',
+        'category_id' => 'required|integer|exists:categories,category_id',
     ]);
 
     if ($validator->fails()) {
@@ -134,8 +134,8 @@ class subcategoriesController extends Controller
     }
 
     $subcategory->update([
-        'NameSub' => $request->NameSub, //El campo nombre de subcategoria es requerido
-        'NameCategory' => $request->NameCategory, //El campo nombre de categoria es requerido
+        'name' => $request->name, //El campo nombre de subcategoria es requerido
+        'category_id' => $request->category_id, //El campo nombre de categoria es requerido
     ]);
 
     return response()->json(['message' => 'Subcategoría actualizada exitosamente.', 'subcategory' => $subcategory, 'status' => 200], 200);

@@ -7,92 +7,69 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Products;
 
-class productController extends Controller
+class ProductController extends Controller
 {
-    /*public function __construct()
-    {
-        $this->middleware('role:admin')->except(['index', 'show']);
-        $this->middleware('role:client')->only(['index', 'show']);
-    }*/
-
     private $messages = [
         'not_found' => ['message' => 'No se encontró el producto.', 'status' => 404],
         'found' => ['message' => 'Producto encontrado.', 'status' => 200],
         'validation_error' => ['message' => 'Error en la validación de los datos.', 'status' => 400],
         'created' => ['message' => 'Producto creado exitosamente.', 'status' => 201],
         'creation_error' => ['message' => 'Error al crear el producto.', 'status' => 500],
-        'deleted' => ['message' => 'Producto eliminado exitosamente.', 'status' => 200], // Añadir mensaje de eliminado exitosamente
-
+        'deleted' => ['message' => 'Producto eliminado exitosamente.', 'status' => 200],
     ];
 
-
-// ADMINISTRADOR
-// Método para obtener todos los productos
-public function index()
-{
-    // Obtener todos los productos
-    $products = Products::all(); // Eliminamos la relación 'with('image')'
-    // Verificar si no se encontraron productos
-    if ($products->isEmpty()) {
-        return response()->json($this->messages['not_found'], 404);
-    }
-    // Preparar y retornar respuesta JSON con los productos encontrados y mensaje de éxito
-   return response()->json([
-    'message' => $this->messages['found']['message'], // Mensaje de éxito
-    'products' => $products, // Lista de categorías encontradas
-    'status' => $this->messages['found']['status']], 200);
-}
-
-public function store(Request $request)
-{
-    // Validar los datos recibidos en la solicitud
-    $validator = Validator::make($request->all(), [
-        'NameProduct' => 'required',
-        'Description' => 'required',
-        'Price' => 'required|max:10',
-        'Stock' => 'required',
-        //'NameCategory' => 'required|string|exists:categories,NameCategory',
-        'NameSub' => 'required|string|exists:subcategories,NameSub',
-        'ImageURL' => 'required|url',
-        'Status' => 'required'
-    ]);
-
-
-    // Verificar si la validación falla
-    if ($validator->fails()) {
-        return response()->json(['message' => 'Error en la validación de los datos.', 'errors' => $validator->errors(), 'status' => 400], 400);
-        return response()->json($this->messages['found'], 200);
-
+    // Método para obtener todos los productos
+    public function index()
+    {
+        $products = Products::all();
+        if ($products->isEmpty()) {
+            return response()->json($this->messages['not_found'], 404);
+        }
+        return response()->json([
+            'message' => $this->messages['found']['message'],
+            'products' => $products,
+            'status' => $this->messages['found']['status']
+        ], 200);
     }
 
-   // Verificar si la validación falla
-   if ($validator->fails()) {
-    // Retornar respuesta de error en formato JSON con el mensaje de validación de datos
-    return response()->json(array_merge($this->messages['validation_error'], ['errors' => $validator->errors()]), 400);
-}
+    // Método para crear un nuevo producto
+    public function store(Request $request)
+    {
+        // Validar los datos recibidos en la solicitud
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'price' => 'required|numeric|min:0',
+            'stock' => 'required|integer|min:0',
+            'subcategory_id' => 'required|integer|exists:subcategories,id',
+            'status' => 'required|string|in:activo,inactivo',
+            'image_url' => 'required|url'
+        ]);
 
+        // Verificar si la validación falla
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => $this->messages['validation_error']['message'],
+                'errors' => $validator->errors(),
+                'status' => $this->messages['validation_error']['status']
+            ], 400);
+        }
 
-    // Crear un nuevo producto con los datos validados
-    $product = Products::create([
-        'NameProduct' => $request->NameProduct,
-        'Description' => $request->Description,
-        'Price' => $request->Price,
-        'Stock' => $request->Stock,
-        //'NameCategory' => $request->NameCategory,
-        'NameSub' => $request->NameSub,
-        'ImageURL' => $request->ImageURL,
-        'Status' => $request->Status
-    ]);
+        // Crear un nuevo producto con los datos validados
+        $product = Products::create($request->all());
 
-    // Verificar si la creación falla
-    if (!$product) {
-        // Retornar respuesta de error en formato JSON con mensaje de error en la creación
-        return response()->json($this->messages['creation_error'], 500);
+        // Verificar si la creación falla
+        if (!$product) {
+            return response()->json($this->messages['creation_error'], 500);
+        }
+
+        // Retornar respuesta exitosa en formato JSON con el mensaje de creación exitosa y datos del producto
+        return response()->json([
+            'message' => $this->messages['created']['message'],
+            'products' => $product,
+            'status' => $this->messages['created']['status']
+        ], 201);
     }
-
-    // Retornar respuesta exitosa en formato JSON con el mensaje de creación exitosa y datos de los productos
-    return response()->json(array_merge($this->messages['created'], ['products' => $product]), 201);
-}
 
 
      // Método para eliminar un producto
@@ -137,14 +114,13 @@ public function update(Request $request, $id)
 
     // Validar los datos recibidos en la solicitud
     $validator = Validator::make($request->all(), [
-        'NameProduct' => 'required|string|max:255',
-        'Description' => 'required|string',
-        'Price' => 'required|numeric',
-        'Stock' => 'required|integer',
-       // 'NameCategory' => 'required|string|exists:categories,NameCategory',
-        'NameSub' => 'required|string|exists:subcategories,NameSub',
-        'ImageURL' => 'required|url',
-        'Status' => 'required|string',
+        'name' => 'required|string|max:255',
+        'description' => 'required|string',
+        'price' => 'required|numeric',
+        'stock' => 'required|integer',
+        'subcategory_id' => 'required|integer|exists:subcategories,id', //subcategory_id
+        'status' => 'required|string',
+        'image_url' => 'required|url'
     ]);
 
     // Verificar si la validación falla
@@ -154,14 +130,13 @@ public function update(Request $request, $id)
 
     // Actualizar el producto con los datos validados
     $product->update([
-        'NameProduct' => $request->NameProduct,
-        'Description' => $request->Description,
-        'Price' => $request->Price,
-        'Stock' => $request->Stock,
-       // 'NameCategory' => $request->NameCategory,
-        'NameSub' => $request->NameSub,
-        'ImageURL' => $request->ImageURL,
-        'Status' => $request->Status,
+        'name' => $request->name,
+        'description' => $request->description,
+        'price' => $request->price,
+        'stock' => $request->stock,
+        'subcategory_id' => $request->subcategory_id,
+        'status' => $request->status,
+        'image_url' => $request->image_url
     ]);
 
     // Retornar respuesta JSON con mensaje de éxito, datos del producto actualizado y código de estado 200

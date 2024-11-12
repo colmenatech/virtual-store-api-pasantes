@@ -15,12 +15,12 @@ return new class extends Migration
         if (!Schema::hasTable('categories')) {
             Schema::create('categories', function (Blueprint $table) {
                 $table->id();
-                $table->string('NameCategory', 50); // Columna de nombre de categoría
+                $table->string('name', 50); // Columna de nombre de categoría
                 $table->timestamps();
             });
         }
     }
-    
+
     public function down(): void
     {
         Schema::dropIfExists('categories');
