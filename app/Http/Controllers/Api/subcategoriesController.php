@@ -126,7 +126,7 @@ class subcategoriesController extends Controller
 
     $validator = Validator::make($request->all(), [
         'name' => 'required|string|max:255',
-        'category_id' => 'required|integer|exists:categories,category_id',
+        'category_id' => 'required|integer|exists:categories,id',
     ]);
 
     if ($validator->fails()) {
