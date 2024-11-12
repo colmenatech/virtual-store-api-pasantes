@@ -10,18 +10,17 @@ class Invoice extends Model
     use HasFactory;
 
     protected $table = 'invoice';
-    protected $primaryKey = 'IdInvoice'; // Asegúrate de definir la clave primaria
+    protected $primaryKey = 'id'; // Asegúrate de definir la clave primaria
     protected $fillable = [
-        'IdInvoice',
-        'IdUser',
-        'Total',
+        'id',
+        'user_id',
+        'total',
         'created_at',
-        'updated_at',
+        'updated_at'
     ];
 
     public function detailinvoices()
     {
-        return $this->hasMany(DetailInvoice::class, 'IdInvoice');
+        return $this->hasMany(DetailInvoice::class, 'invoice_id');
     }
 }
-
