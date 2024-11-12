@@ -10,16 +10,16 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('detailinvoice', function (Blueprint $table) {
-            $table->increments('id'); // Llave primaria
-            $table->integer('invoice_id')->unsigned();
-            $table->foreignId('product_id')->constrained();
+        Schema::create('detailinvoices', function (Blueprint $table) {
+            $table->id();  // Llave primaria
+            $table->foreignId('invoice_id');
+            $table->foreignId('product_id');
             $table->integer('quantity');
             $table->decimal('price', 8, 2); // Asegurarse de que el tamaño decimal esté correcto
             $table->timestamps(); // Añadir los campos created_at y updated_at
 
 
-            $table->foreign('invoice_id')->references('id')->on('invoice')->onDelete('restrict');
+            $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('restrict');
             //relacion del campo id de la tabla invoice a la de detailinvoice
             //se define invoice_id como clave foránea
 
