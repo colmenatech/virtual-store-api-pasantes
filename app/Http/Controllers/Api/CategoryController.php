@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Categories;
+use App\Models\Category;
 
-class categoriesController extends Controller
+class CategoryController extends Controller
 {
     /*public function __construct()
     {
@@ -30,7 +30,7 @@ class categoriesController extends Controller
 public function index()
 {
     // Obtener todas las categorías
-    $categories = Categories::all();
+    $categories = Category::all();
 
     // Verificar si no se encontraron categorías
     if ($categories->isEmpty()) {
@@ -45,6 +45,26 @@ public function index()
         'status' => $this->messages['found']['status'], // Código de estado 200
     ], 200);
 }
+
+    // Método para mostrar una categoría específica
+    public function show($id)
+    {
+        // Buscar la categoría por ID
+        $category = Category::find($id);
+
+        // Verificar si la categoría no se encuentra
+        if (!$category) {
+            return response()->json($this->messages['not_found'], 404);
+        }
+
+        // Preparar y retornar respuesta JSON con la categoría encontrada y mensaje de éxito
+        return response()->json([
+            'message' => $this->messages['found']['message'],
+            'category' => $category,
+            'status' => $this->messages['found']['status'],
+        ], 200);
+    }
+
 
 
 
@@ -63,7 +83,7 @@ public function index()
         }
 
         // Crear la nueva categoría
-        $category = Categories::create([
+        $category = Category::create([
             'name' => $request->name, // Asignar el nombre de la categoría del request
         ]);
 
@@ -82,7 +102,7 @@ public function index()
     public function update(Request $request, $id)
     {
         // Buscar la categoría por ID
-        $category = Categories::find($id);
+        $category = Category::find($id);
 
         // Verificar si la categoría no se encuentra
         if (!$category) {
@@ -123,7 +143,7 @@ public function index()
     public function destroy($id)
     {
         // Buscar la categoría por ID
-        $category = Categories::find($id);
+        $category = Category::find($id);
 
         // Verificar si la categoría no se encuentra
         if (!$category) {
@@ -140,4 +160,6 @@ public function index()
             return response()->json($this->messages['deleted'], 200);
         }
     }
+
+
 }

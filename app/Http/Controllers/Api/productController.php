@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Support\Facades\Validator;
+use App\Models\Product; // Asegúrate de usar el espacio de nombres correcto
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Products;
+use Illuminate\Support\Facades\Validator; // Asegúrate de importar Validator
 
 class ProductController extends Controller
 {
@@ -21,7 +21,7 @@ class ProductController extends Controller
     // Método para obtener todos los productos
     public function index()
     {
-        $products = Products::all();
+        $products = Product::all(); // Cambiado de $Product a $products para consistencia
         if ($products->isEmpty()) {
             return response()->json($this->messages['not_found'], 404);
         }
@@ -56,7 +56,7 @@ class ProductController extends Controller
         }
 
         // Crear un nuevo producto con los datos validados
-        $product = Products::create($request->all());
+        $product = Product::create($request->all()); // Cambiado de $Product a $product
 
         // Verificar si la creación falla
         if (!$product) {
@@ -71,114 +71,92 @@ class ProductController extends Controller
         ], 201);
     }
 
-
-     // Método para eliminar un producto
+    // Método para eliminar un producto
     public function destroy($id)
     {
-
-        // Buscarel producto por ID
-        $product = Products::find($id);
+        // Buscar el producto por ID
+        $product = Product::find($id);
 
         // Verificar si el producto no se encuentra
         if (!$product) {
-            // Retornar respuesta JSON con mensaje de "No se encontró el producto" y código de estado 404
             return response()->json($this->messages['not_found'], 404);
         }
 
-         // Verificar si se encuentra el producto antes de eliminar
-        if ($product) {
-            // Eliminar el producto encontrado
-            $product->delete();
+        // Eliminar el producto encontrado
+        $product->delete();
 
-            // Retornar respuesta JSON con mensaje de éxito y código de estado 200
-            return response()->json($this->messages['deleted'], 200);
+        return response()->json($this->messages['deleted'], 200);
+    }
+
+    // Método para actualizar un producto
+    public function update(Request $request, $id)
+    {
+        // Buscar el producto por ID
+        $product = Product::find($id);
+
+        // Verificar si el producto no se encuentra
+        if (!$product) {
+            return response()->json($this->messages['not_found'], 404);
         }
+
+        // Validar los datos recibidos en la solicitud
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'price' => 'required|numeric',
+            'stock' => 'required|integer',
+            'subcategory_id' => 'required|integer|exists:subcategories,id',
+            'status' => 'required|string',
+            'image_url' => 'required|url'
+        ]);
+
+        // Verificar si la validación falla
+        if ($validator->fails()) {
+            return response()->json(array_merge($this->messages['validation_error'], ['errors' => $validator->errors()]), 400);
+        }
+
+        // Actualizar el producto con los datos validados
+        $product->update($request->all());
+
+        // Retornar respuesta JSON con mensaje de éxito, datos del producto actualizado y código de estado 200
+        return response()->json(['message' => 'Producto actualizado exitosamente.', 'product' => $product, 'status' => 200], 200);
     }
 
+    // Método para mostrar un producto específico
+    public function show($id)
+    {
+        // Buscar el producto por ID
+        $product = Product::find($id);
 
+        // Verificar si el producto no se encuentra
+        if (!$product) {
+            return response()->json($this->messages['not_found'], 404);
+        }
 
-
-public function update(Request $request, $id)
-{
-    /*if ($request->user()->role !== 'admin') {
-        return response()->json(['message' => 'No autorizado'], 403);
-    }*/
-
-    // Buscar el producto por ID
-    $product = Products::find($id);
-
-    // Verificar si el producto no se encuentra
-    if (!$product) {
-        return response()->json($this->messages['not_found'], 404);
+        // Preparar y retornar respuesta JSON con el producto encontrado y mensaje de éxito
+        return response()->json([
+            'message' => $this->messages['found']['message'],
+            'product' => $product,
+            'status' => $this->messages['found']['status'],
+        ], 200);
     }
 
-    // Validar los datos recibidos en la solicitud
-    $validator = Validator::make($request->all(), [
-        'name' => 'required|string|max:255',
-        'description' => 'required|string',
-        'price' => 'required|numeric',
-        'stock' => 'required|integer',
-        'subcategory_id' => 'required|integer|exists:subcategories,id', //subcategory_id
-        'status' => 'required|string',
-        'image_url' => 'required|url'
-    ]);
+    // Método para obtener todos los productos para el cliente
+    public function indexcliente()
+    {
+        // Obtener todos los productos
+        $products = Product::all();
 
-    // Verificar si la validación falla
-    if ($validator->fails()) {
-        return response()->json(array_merge($this->messages['validation_error'], ['errors' => $validator->errors()]), 400);
+        // Verificar si no se encontraron productos
+        if ($products->isEmpty()) {
+            return response()->json($this->messages['not_found'], 404);
+        }
+
+        // Preparar y retornar respuesta JSON con los productos encontrados y mensaje de éxito
+        return response()->json([
+            'message' => $this->messages['found']['message'],
+            'products' => $products,
+            'status' => $this->messages['found']['status']
+        ], 200);
     }
-
-    // Actualizar el producto con los datos validados
-    $product->update([
-        'name' => $request->name,
-        'description' => $request->description,
-        'price' => $request->price,
-        'stock' => $request->stock,
-        'subcategory_id' => $request->subcategory_id,
-        'status' => $request->status,
-        'image_url' => $request->image_url
-    ]);
-
-    // Retornar respuesta JSON con mensaje de éxito, datos del producto actualizado y código de estado 200
-    return response()->json(['message' => 'Producto actualizado exitosamente.', 'product' => $product, 'status' => 200], 200);
 }
-
-
-
-public function show($id)
-{
-    // Buscar el producto por ID
-    $product = Products::find($id);
-
-    // Verificar si el producto no se encuentra
-    if (!$product) {
-        return response()->json($this->messages['not_found'], 404);
-    }
-
-    // Preparar y retornar respuesta JSON con el producto encontrado y mensaje de éxito
-    return response()->json([
-        'message' => $this->messages['found']['message'], // Mensaje de éxito
-        'products' => $product, // Lista de categorías encontradas
-        'status' => $this->messages['found']['status'], // Código de estado 200
-    ], 200);
-}
-
-
-
-public function indexcliente()
-{
-    // Obtener todos los productos
-    $products = Products::all(); // Eliminamos la relación 'with('image')'
-    // Verificar si no se encontraron productos
-    if ($products->isEmpty()) {
-        return response()->json($this->messages['not_found'], 404);
-    }
-    // Preparar y retornar respuesta JSON con los productos encontrados y mensaje de éxito
-   return response()->json([
-    'message' => $this->messages['found']['message'], // Mensaje de éxito
-    'products' => $products, // Lista de categorías encontradas
-    'status' => $this->messages['found']['status']], 200);
-}
-
-}
-

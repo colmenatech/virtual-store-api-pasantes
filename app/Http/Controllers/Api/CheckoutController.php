@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Products; // Importa el modelo Products
+use App\Models\Product; // Importa el modelo Product
 use App\Models\Invoice; // Importa el modelo Invoice
 use App\Models\DetailInvoice; // Importa el modelo DetailInvoice
 use Illuminate\Support\Facades\DB; // Importa la clase DB para transacciones
@@ -30,7 +30,7 @@ class CheckoutController extends Controller
 
             // Recorre cada producto en la solicitud para validar y calcular el total.
             foreach ($request->products as $item) {
-                $product = Products::find($item['product_id']); // Busca el producto por ID
+                $product = Product::find($item['product_id']); // Busca el producto por ID
                 Log::info('Producto: ' . $product->name . ', Stock: ' . $product->stock . ', Cantidad solicitada: ' . $item['quantity']); // Log de información del producto
                 if (!$product) {
                     // Si el producto no se encuentra, retorna un error 404.
@@ -52,7 +52,7 @@ class CheckoutController extends Controller
 
             // Recorre cada producto nuevamente para crear los detalles de la factura y actualizar el stock.
             foreach ($request->products as $item) {
-                $product = Products::find($item['product_id']); // Busca el producto por ID
+                $product = Product::find($item['product_id']); // Busca el producto por ID
                 $product->stock -= $item['quantity']; // Descuenta la cantidad del stock
                 $product->save(); // Guarda los cambios en el producto
 

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Products extends Model
+class Product extends Model
 {
     protected $table = "products";
 
@@ -20,11 +20,10 @@ class Products extends Model
         'image_url'
     ];
 
-
-    // Relación con la subcategoría
-    public function subcategory()
-    {
-        return $this->belongsTo(Subcategories::class);
-    }
+     // Relación con la subcategoría
+     public function subcategory()
+     {
+         return $this->belongsTo(Subcategory::class);
+     }
 
 }

@@ -3,10 +3,10 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ProductController;
-use App\Http\Controllers\Api\CategoriesController;
+use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\Api\InvoiceController;
-use App\Http\Controllers\Api\SubcategoriesController;
+use App\Http\Controllers\Api\SubcategoryController;
 use App\Http\Controllers\Api\CheckoutController;
 use App\Http\Controllers\Api\AuthController;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
@@ -36,17 +36,19 @@ Route::middleware([EnsureFrontendRequestsAreStateful::class, 'auth:sanctum'])->g
         Route::delete('user-profile/products/{id}', [ProductController::class, 'destroy']); // Eliminar un producto existente
 
         // Rutas CRUD para Administradores (categorías)
-        Route::post('user-profile/categories', [CategoriesController::class, 'store']); // Crear una nueva categoría
-        Route::put('user-profile/categories/{id}', [CategoriesController::class, 'update']); // Actualizar una categoría existente
-        Route::delete('user-profile/categories/{id}', [CategoriesController::class, 'destroy']); // Eliminar una categoría existente
-        Route::get('user-profile/categories', [CategoriesController::class, 'index']); // Listar todas las categorías
+        Route::post('user-profile/categories', [CategoryController::class, 'store']); // Crear una nueva categoría
+        Route::put('user-profile/categories/{id}', [CategoryController::class, 'update']); // Actualizar una categoría existente
+        Route::delete('user-profile/categories/{id}', [CategoryController::class, 'destroy']); // Eliminar una categoría existente
+        Route::get('user-profile/categories', [CategoryController::class, 'index']); // Listar todas las categorías
+        Route::get('user-profile/categories/{id}', [CategoryController::class, 'show']);//Buscar categoria en especifico
 
         // Rutas CRUD para Administrador (subcategorías)
-        Route::post('user-profile/subcategories', [SubcategoriesController::class, 'store']); // Crear una nueva subcategoría
-        Route::put('user-profile/subcategories/{id}', [SubcategoriesController::class, 'update']); // Actualizar una subcategoría existente
-        Route::delete('user-profile/subcategories/{id}', [SubcategoriesController::class, 'destroy']); // Eliminar una subcategoría existente
-        Route::get('user-profile/subcategories', [SubcategoriesController::class, 'index']); // Listar todas las subcategorías
-        Route::get('user-profile/subcategories/{id}', [SubcategoriesController::class, 'show']); // Obtener los detalles de una subcategoría específica
+        Route::post('user-profile/subcategories', [SubcategoryController::class, 'store']); // Crear una nueva subcategoría
+        Route::put('user-profile/subcategories/{id}', [SubcategoryController::class, 'update']); // Actualizar una subcategoría existente
+        Route::delete('user-profile/subcategories/{id}', [SubcategoryController::class, 'destroy']); // Eliminar una subcategoría existente
+        Route::get('user-profile/subcategories', [SubcategoryController::class, 'index']); // Listar todas las subcategorías
+        Route::get('user-profile/subcategories/{id}', [SubcategoryController::class, 'show']); // Obtener los detalles de una subcategoría específica
+
 
         // Facturas
         Route::get('/invoice', [InvoiceController::class, 'index']); // Listar todas las facturas

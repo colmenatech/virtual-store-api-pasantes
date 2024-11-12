@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Subcategories;
+use App\Models\Subcategory;
 
-class subcategoriesController extends Controller
+class SubcategoryController extends Controller
 {
    /* public function __construct()
     {
@@ -29,7 +29,7 @@ class subcategoriesController extends Controller
     public function index()
     {
         // Obtener todas las subcategorías
-        $subcategories = Subcategories::all();
+        $subcategories = Subcategory::all();
 
         // Verificar si no se encontraron subcategorías
         if ($subcategories->isEmpty()) {
@@ -50,7 +50,7 @@ class subcategoriesController extends Controller
     public function show($id)
     {
         // Buscar la subcategoría por ID
-        $subcategory = Subcategories::find($id);
+        $subcategory = Subcategory::find($id);
 
         // Verificar si la subcategoría no se encuentra
         if (!$subcategory) {
@@ -79,7 +79,7 @@ class subcategoriesController extends Controller
         }
 
         // Crear la nueva subcategoría
-        $subcategory = Subcategories::create([
+        $subcategory = Subcategory::create([
             'name' => $request->name, // Asegúrate de que el campo sea el mismo que en tu solicitud
             'category_id' => $request->category_id,  //El campo del id de la categoria es requerido
         ]);
@@ -97,7 +97,7 @@ class subcategoriesController extends Controller
     public function destroy($id)
     {
         // Buscar la subcategoría por ID
-        $subcategory = Subcategories::find($id);
+        $subcategory = Subcategory::find($id);
 
         // Verificar si la subcategoría no se encuentra
         if (!$subcategory) {
@@ -118,7 +118,7 @@ class subcategoriesController extends Controller
 
     public function update(Request $request, $id)
 {
-    $subcategory = Subcategories::find($id);
+    $subcategory = Subcategory::find($id);
 
     if (!$subcategory) {
         return response()->json($this->messages['not_found'], 404);
