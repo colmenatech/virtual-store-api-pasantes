@@ -16,8 +16,11 @@ return new class extends Migration
             // Crear la tabla 'subcategories'
             Schema::create('subcategories', function (Blueprint $table) {
                 $table->id(); // Columna ID con auto-incremento
-                $table->string('NameSub'); // Columna de nombre de subcategoría
-                $table->unsignedBigInteger('NameCategory'); // Columna de ID de la categoría
+                $table->string('name'); // Columna de nombre de subcategoría
+                $table->foreignId('category_id');  // id de la categoría
+
+                $table->foreign('category_id')->references('id')->on('categories')->onDelete('restrict');
+
                 $table->timestamps(); // Añadir columnas created_at y updated_at para gestionar automáticamente las marcas de tiempo
             });
         }

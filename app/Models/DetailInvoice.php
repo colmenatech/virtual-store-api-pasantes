@@ -12,22 +12,25 @@ class DetailInvoice extends Model
     protected $table = 'detailinvoice';
 
     protected $fillable = [
-        'IdInvoice',
-        'IdProduct',
-        'Quantity',
-        'Price',
+        'id',
+        'invoice_id',
+        'product_id',
+        'quantity',
+        'price',
+        'created_at',
+        'updated_at'
     ];
 
     // Relación con la tabla `invoice`
     public function invoice()
     {
-        return $this->belongsTo(Invoice::class, 'IdInvoice');
+        return $this->belongsTo(Invoice::class);
     }
 
     // Relación con la tabla `product`
     public function products()
     {
-        return $this->belongsTo(Products::class, 'IdProduct');
+        return $this->belongsTo(Products::class);
     }
 
 }

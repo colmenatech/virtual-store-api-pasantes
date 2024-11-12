@@ -14,7 +14,7 @@ class categoriesController extends Controller
         $this->middleware('role:admin')->except(['index', 'show']);
         $this->middleware('role:client')->only(['index', 'show']);
     }*/
-    
+
     // Array de mensajes
     private $messages = [
         'found' => ['message' => 'Categorías encontradas.', 'status' => 200], // Añadir mensaje de encontrado exitosamente
@@ -53,7 +53,7 @@ public function index()
    {
         // Validar los datos del request
         $validator = Validator::make($request->all(), [
-            'NameCategory' => 'required|string|max:50', // El nombre de la categoría es requerido y debe ser una cadena con un máximo de 50 caracteres
+            'name' => 'required|string|max:50', // El nombre de la categoría es requerido y debe ser una cadena con un máximo de 50 caracteres
         ]);
 
         // Verificar si la validación falla
@@ -64,7 +64,7 @@ public function index()
 
         // Crear la nueva categoría
         $category = Categories::create([
-            'NameCategory' => $request->NameCategory, // Asignar el nombre de la categoría del request
+            'name' => $request->name, // Asignar el nombre de la categoría del request
         ]);
 
         // Verificar si la creación falla
@@ -93,7 +93,7 @@ public function index()
 
         // Validar los datos del request
         $validator = Validator::make($request->all(), [
-            'NameCategory' => 'required|string|max:50',
+            'name' => 'required|string|max:50',
         ]);
 
         // Verificar si la validación falla
@@ -104,7 +104,7 @@ public function index()
         }
 
         // Actualizar los datos de la categoría
-        $category->NameCategory = $request->NameCategory;
+        $category->name = $request->name;
         $category->save();
 
         // Preparar la respuesta exitosa
@@ -135,7 +135,7 @@ public function index()
         if ($category) {
             // Eliminar el producto encontrado
             $category->delete();
-            
+
             // Retornar respuesta JSON con mensaje de éxito y código de estado 200
             return response()->json($this->messages['deleted'], 200);
         }

@@ -14,7 +14,7 @@ class subcategoriesController extends Controller
         $this->middleware('role:admin')->except(['index', 'show']);
         $this->middleware('role:client')->only(['index', 'show']);
     }*/
-    
+
     // Array de mensajes
     private $messages = [
         'not_found' => ['message' => 'No se encontró la subcategoría.', 'status' => 404],
@@ -50,10 +50,10 @@ class subcategoriesController extends Controller
     public function show($id)
     {
         // Buscar la subcategoría por ID
-        $subcategory = Subcategories::find($id);
+        $subcategories = Subcategories::find($id);
 
         // Verificar si la subcategoría no se encuentra
-        if (!$subcategory) {
+        if (!$subcategories) {
             // Retornar respuesta JSON con mensaje de "No se encontró la subcategoría" y código de estado 404
             return response()->json($this->messages['not_found'], 404);
         }
@@ -61,7 +61,7 @@ class subcategoriesController extends Controller
         // Preparar y retornar respuesta JSON con la subcategoría encontrada y mensaje de éxito
         return response()->json([
             'message' => $this->messages['found']['message'], // Mensaje de éxito
-            'subcategory' => $subcategory, // Subcategoría encontrada
+            'subcategories' => $subcategories, // Subcategoría encontrada
             'status' => $this->messages['found']['status'], // Código de estado 200
         ], 200);
     }
@@ -70,7 +70,7 @@ class subcategoriesController extends Controller
     {
         // Validar los datos del request
         $validator = Validator::make($request->all(), [
-            'NameSub' => 'required|string|max:50', // Asegúrate de que el campo sea el mismo que en tu solicitud
+            'name' => 'required|string|max:50', // Asegúrate de que el campo sea el mismo que en tu solicitud
         ]);
 
         // Verificar si la validación falla
@@ -79,37 +79,37 @@ class subcategoriesController extends Controller
         }
 
         // Crear la nueva subcategoría
-        $subcategory = Subcategories::create([
-            'NameSub' => $request->NameSub, // Asegúrate de que el campo sea el mismo que en tu solicitud
-            'NameCategory' => $request->NameCategory, //El campo del nombre de la categoria es requerido
+        $subcategories = Subcategories::create([
+            'name' => $request->name, // Asegúrate de que el campo sea el mismo que en tu solicitud
+            'category_id' => $request->category_id, //El campo del nombre de la categoria es requerido
         ]);
 
         // Verificar si la creación falla
-        if (!$subcategory) {
+        if (!$subcategories) {
             return response()->json($this->messages['creation_error'], 500);
         }
 
         // Retornar respuesta exitosa en formato JSON con el mensaje de creación exitosa y datos de la subcategoría
-        return response()->json(array_merge($this->messages['created'], ['subcategory' => $subcategory]), 201);
+        return response()->json(array_merge($this->messages['created'], ['subcategory' => $subcategories]), 201);
     }
 
     // MÉTODO PARA ELIMINAR UNA SUBCATEGORÍA
     public function destroy($id)
     {
         // Buscar la subcategoría por ID
-        $subcategory = Subcategories::find($id);
+        $subcategories = Subcategories::find($id);
 
         // Verificar si la subcategoría no se encuentra
-        if (!$subcategory) {
+        if (!$subcategories) {
             // Retornar respuesta JSON con mensaje de "No se encontró la subcategoría" y código de estado 404
             return response()->json($this->messages['not_found'], 404);
         }
 
          // Verificar si se encuentra el producto antes de eliminar
-        if ($subcategory) {
+        if ($subcategories) {
             // Eliminar el producto encontrado
-            $subcategory->delete();
-            
+            $subcategories->delete();
+
             // Retornar respuesta JSON con mensaje de éxito y código de estado 200
             return response()->json($this->messages['deleted'], 200);
         }
@@ -118,27 +118,27 @@ class subcategoriesController extends Controller
 
     public function update(Request $request, $id)
 {
-    $subcategory = Subcategories::find($id);
+    $subcategories = Subcategories::find($id);
 
-    if (!$subcategory) {
+    if (!$subcategories) {
         return response()->json($this->messages['not_found'], 404);
     }
 
     $validator = Validator::make($request->all(), [
-        'NameSub' => 'required|string|max:255',
-        'NameCategory' => 'required|string|exists:categories,NameCategory',
+        'name' => 'required|string|max:255',
+        'category_id' => 'required|string|exists:categories,category_id',
     ]);
 
     if ($validator->fails()) {
         return response()->json(array_merge($this->messages['validation_error'], ['errors' => $validator->errors()]), 400);
     }
 
-    $subcategory->update([
-        'NameSub' => $request->NameSub, //El campo nombre de subcategoria es requerido
-        'NameCategory' => $request->NameCategory, //El campo nombre de categoria es requerido
+    $subcategories->update([
+        'name' => $request->name, //El campo nombre de subcategoria es requerido
+        'category_id' => $request->category_id, //El campo nombre de categoria es requerido
     ]);
 
-    return response()->json(['message' => 'Subcategoría actualizada exitosamente.', 'subcategory' => $subcategory, 'status' => 200], 200);
+    return response()->json(['message' => 'Subcategoría actualizada exitosamente.', 'subcategories' => $subcategories, 'status' => 200], 200);
 }
 
 
