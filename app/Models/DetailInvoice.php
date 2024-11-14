@@ -9,7 +9,7 @@ class DetailInvoice extends Model
 {
     use HasFactory;
 
-    protected $table = 'detailinvoice';
+    protected $table = 'detailinvoices';
 
     protected $fillable = [
         'id',
@@ -30,7 +30,7 @@ class DetailInvoice extends Model
     // Relación con la tabla product
     public function products()
     {
-        return $this->belongsTo(Products::class);
+        return $this->belongsTo(Product::class);
     }
 
 }

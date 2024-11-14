@@ -9,7 +9,7 @@ class Invoice extends Model
 {
     use HasFactory;
 
-    protected $table = 'invoice';
+    protected $table = 'invoices';
     protected $primaryKey = 'id'; // Asegúrate de definir la clave primaria
     protected $fillable = [
         'id',

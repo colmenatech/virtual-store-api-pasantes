@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Subcategories extends Model
+class Subcategory extends Model
 {
     protected $table = 'subcategories';
 
@@ -20,12 +20,12 @@ class Subcategories extends Model
     //Relacion del campo NameSub de subcategories a la tabla products
     public function products()
     {
-        return $this->hasMany(Products::class);
+        return $this->hasMany(Product::class);
     }
 
     //Relacion del campo NameCategory de categories a la tabla subcategories
     public function category()
     {
-        return $this->belongsTo(Categories::class);
+        return $this->belongsTo(Category::class);
     }
 }

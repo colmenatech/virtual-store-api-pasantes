@@ -14,6 +14,5 @@ Route::get('/login', function () {
 
 // Ruta para servir la aplicación React
 Route::get('/{any}', function () {
-    return view('react');
+  return view('react');
 })->where('any', '.*');
-
