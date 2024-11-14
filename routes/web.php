@@ -13,6 +13,6 @@ Route::get('/login', function () {
 })->name('login');
 
 // Ruta para servir la aplicación React
-Route::get('/{any}', function () {
-  return view('react');
-})->where('any', '.*');
+//Route::get('/{any}', function () {
+ // return view('react');
+//})->where('any', '.*');

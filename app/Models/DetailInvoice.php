@@ -9,7 +9,7 @@ class DetailInvoice extends Model
 {
     use HasFactory;
 
-    protected $table = 'detailinvoices';
+    //protected $table = 'detailinvoices';
 
     protected $fillable = [
         'id',

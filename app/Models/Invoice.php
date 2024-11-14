@@ -9,8 +9,6 @@ class Invoice extends Model
 {
     use HasFactory;
 
-    protected $table = 'invoices';
-    protected $primaryKey = 'id'; // Asegúrate de definir la clave primaria
     protected $fillable = [
         'id',
         'user_id',
@@ -21,6 +19,6 @@ class Invoice extends Model
 
     public function detailinvoices()
     {
-        return $this->hasMany(DetailInvoice::class, 'invoice_id');
+        return $this->hasMany(DetailInvoice::class);
     }
 }
