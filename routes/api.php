@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\SubcategoryController;
 use App\Http\Controllers\Api\CheckoutController;
 use App\Http\Controllers\Api\AuthController;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
+use App\Http\Controllers\Api\CardController;
 
 // Rutas para Autenticación de Usuarios
 Route::post('/register', [AuthController::class, 'register']); // Registro de usuarios
@@ -74,7 +75,17 @@ Route::delete('/permissions/{id}', [RolePermissionController::class, 'deletePerm
 Route::get('/roles', [RolePermissionController::class, 'getAllRoles']); // Listar todos los roles
 Route::get('/permissions', [RolePermissionController::class, 'getAllPermissions']); // Listar todos los permisos
 
-// Rutas para compras
+//Rutas para las tarjetas del usuario
+
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('user-profile/cards', [CardController::class, 'index']); // Listar todas las tarjetas del usuario
+    Route::post('user-profile/cards', [CardController::class, 'store']); // Crear una nueva tarjeta
+    Route::get('user-profile/cards/{id}', [CardController::class, 'show']); // Obtener los detalles de una tarjeta específica
+    Route::put('user-profile/cards/{id}', [CardController::class, 'update']); // Actualizar una tarjeta existente
+    Route::delete('user-profile/cards/{id}', [CardController::class, 'destroy']); // Eliminar una tarjeta existente
+});
+
 
 
 // Rutas para compras
