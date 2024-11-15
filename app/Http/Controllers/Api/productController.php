@@ -140,23 +140,4 @@ class ProductController extends Controller
             'status' => $this->messages['found']['status'],
         ], 200);
     }
-
-    // Método para obtener todos los productos para el cliente
-    public function indexcliente()
-    {
-        // Obtener todos los productos
-        $products = Product::all();
-
-        // Verificar si no se encontraron productos
-        if ($products->isEmpty()) {
-            return response()->json($this->messages['not_found'], 404);
-        }
-
-        // Preparar y retornar respuesta JSON con los productos encontrados y mensaje de éxito
-        return response()->json([
-            'message' => $this->messages['found']['message'],
-            'products' => $products,
-            'status' => $this->messages['found']['status']
-        ], 200);
-    }
 }
