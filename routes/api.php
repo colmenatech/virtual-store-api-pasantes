@@ -12,6 +12,8 @@ use App\Http\Controllers\Api\AuthController;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 use App\Http\Controllers\Api\CardController;
 
+
+
 // Rutas para Autenticación de Usuarios
 Route::post('/register', [AuthController::class, 'register']); // Registro de usuarios
 Route::post('/login', [AuthController::class, 'login']); // Inicio de sesión de usuarios
@@ -25,11 +27,34 @@ Route::middleware([EnsureFrontendRequestsAreStateful::class, 'auth:sanctum'])->g
     Route::post('logout', [AuthController::class, 'logout']); // Cierre de sesión del usuario
     Route::get('users', [AuthController::class, 'allUsers']); // Muestra una lista de todos los usuarios
 
+    //PRODUCTOS
     Route::get('user-profile/products', [ProductController::class, 'index']); // Listar todos los productos
     Route::get('user-profile/products/{id}', [ProductController::class, 'show']); // Obtener los detalles de un producto específico
 
+    //FACTURA
+    // Rutas para compras
+    Route::post('/checkout', [CheckoutController::class, 'checkout']); // Realizar una compra
+    Route::get('/checkout/{id}', [CheckoutController::class, 'getInvoiceById']); // Obtener una factura específica
+    Route::get('/invoice', [InvoiceController::class, 'index']); // Listar todas las facturas
+    Route::get('/invoice/{id}', [InvoiceController::class, 'show']); // Obtener los detalles de una factura específica
 
+    //TARJETA
+    Route::get('user-profile/cards', [CardController::class, 'index']); // Listar todas las tarjetas del usuario
+    Route::post('user-profile/cards', [CardController::class, 'store']); // Crear una nueva tarjeta
+    Route::get('user-profile/cards/{id}', [CardController::class, 'show']); // Obtener los detalles de una tarjeta específica
+    Route::put('user-profile/cards/{id}', [CardController::class, 'update']); // Actualizar una tarjeta existente
+    Route::delete('user-profile/cards/{id}', [CardController::class, 'destroy']); // Eliminar una tarjeta existente
+
+    //CATEGORIAS
+    Route::get('user-profile/categories', [CategoryController::class, 'index']); // Listar todas las categorías
+    Route::get('user-profile/categories/{id}', [CategoryController::class, 'show']);//Buscar categoria en especifico
     // Middleware para rutas protegidas por roles de administrador
+
+    //SUBCATEGORIAS
+    Route::get('user-profile/subcategories', [SubcategoryController::class, 'index']); // Listar todas las subcategorías
+    Route::get('user-profile/subcategories/{id}', [SubcategoryController::class, 'show']); // Obtener los detalles de una subcategoría específica
+
+   
     Route::middleware(['role:admin'])->group(function () {
         // Rutas CRUD para Administradores (productos)
         Route::post('user-profile/products', [ProductController::class, 'store']); // Crear un nuevo producto
@@ -40,20 +65,11 @@ Route::middleware([EnsureFrontendRequestsAreStateful::class, 'auth:sanctum'])->g
         Route::post('user-profile/categories', [CategoryController::class, 'store']); // Crear una nueva categoría
         Route::put('user-profile/categories/{id}', [CategoryController::class, 'update']); // Actualizar una categoría existente
         Route::delete('user-profile/categories/{id}', [CategoryController::class, 'destroy']); // Eliminar una categoría existente
-        Route::get('user-profile/categories', [CategoryController::class, 'index']); // Listar todas las categorías
-        Route::get('user-profile/categories/{id}', [CategoryController::class, 'show']);//Buscar categoria en especifico
 
         // Rutas CRUD para Administrador (subcategorías)
         Route::post('user-profile/subcategories', [SubcategoryController::class, 'store']); // Crear una nueva subcategoría
         Route::put('user-profile/subcategories/{id}', [SubcategoryController::class, 'update']); // Actualizar una subcategoría existente
         Route::delete('user-profile/subcategories/{id}', [SubcategoryController::class, 'destroy']); // Eliminar una subcategoría existente
-        Route::get('user-profile/subcategories', [SubcategoryController::class, 'index']); // Listar todas las subcategorías
-        Route::get('user-profile/subcategories/{id}', [SubcategoryController::class, 'show']); // Obtener los detalles de una subcategoría específica
-
-
-        // Facturas
-        Route::get('/invoice', [InvoiceController::class, 'index']); // Listar todas las facturas
-        Route::get('/invoice/{id}', [InvoiceController::class, 'show']); // Obtener los detalles de una factura específica
     });
 
     // Middleware para rutas protegidas por roles de cliente
@@ -75,21 +91,6 @@ Route::delete('/permissions/{id}', [RolePermissionController::class, 'deletePerm
 Route::get('/roles', [RolePermissionController::class, 'getAllRoles']); // Listar todos los roles
 Route::get('/permissions', [RolePermissionController::class, 'getAllPermissions']); // Listar todos los permisos
 
-//Rutas para las tarjetas del usuario
 
 
-Route::middleware(['auth:sanctum'])->group(function () {
-    Route::get('user-profile/cards', [CardController::class, 'index']); // Listar todas las tarjetas del usuario
-    Route::post('user-profile/cards', [CardController::class, 'store']); // Crear una nueva tarjeta
-    Route::get('user-profile/cards/{id}', [CardController::class, 'show']); // Obtener los detalles de una tarjeta específica
-    Route::put('user-profile/cards/{id}', [CardController::class, 'update']); // Actualizar una tarjeta existente
-    Route::delete('user-profile/cards/{id}', [CardController::class, 'destroy']); // Eliminar una tarjeta existente
-});
-
-
-
-// Rutas para compras
-Route::post('/checkout', [CheckoutController::class, 'checkout']); // Realizar una compra
-
-Route::get('/checkout/{id}', [CheckoutController::class, 'getInvoiceById']); // Obtener una factura específica
 
