@@ -23,14 +23,23 @@ Route::get('/login', function () {
 
 // Rutas protegidas por middleware de autenticación
 Route::middleware([EnsureFrontendRequestsAreStateful::class, 'auth:sanctum'])->group(function () {
+
+    // Rutas para Roles y Permisos
+    Route::post('/roles', [RolePermissionController::class, 'createRole']); // Crear un nuevo rol
+    Route::post('/permissions', [RolePermissionController::class, 'createPermission']); // Crear un nuevo permiso
+    Route::post('/roles/assign-permissions', [RolePermissionController::class, 'assignPermissionToRole']); // Asignar permisos a un rol existente
+    Route::post('/assign-role', [RolePermissionController::class, 'assignRole']); // Asignar un rol a un usuario
+    Route::delete('/roles/{id}', [RolePermissionController::class, 'deleteRole']); // Eliminar un rol
+    Route::delete('/permissions/{id}', [RolePermissionController::class, 'deletePermission']); // Eliminar un permiso
+    Route::get('/roles', [RolePermissionController::class, 'getAllRoles']); // Listar todos los roles
+    Route::get('/permissions', [RolePermissionController::class, 'getAllPermissions']); // Listar todos los permisos
+
+
     Route::get('user-profile', [AuthController::class, 'userProfile']); // Muestra el perfil del usuario autenticado
     Route::post('logout', [AuthController::class, 'logout']); // Cierre de sesión del usuario
     Route::get('users', [AuthController::class, 'allUsers']); // Muestra una lista de todos los usuarios
 
-    //PRODUCTOS
-    Route::get('user-profile/products', [ProductController::class, 'index']); // Listar todos los productos
-    Route::get('user-profile/products/{id}', [ProductController::class, 'show']); // Obtener los detalles de un producto específico
-
+   
     //FACTURA
     // Rutas para compras
     Route::post('/checkout', [CheckoutController::class, 'checkout']); // Realizar una compra
@@ -45,6 +54,10 @@ Route::middleware([EnsureFrontendRequestsAreStateful::class, 'auth:sanctum'])->g
     Route::put('user-profile/cards/{id}', [CardController::class, 'update']); // Actualizar una tarjeta existente
     Route::delete('user-profile/cards/{id}', [CardController::class, 'destroy']); // Eliminar una tarjeta existente
 
+    //PRODUCTOS
+     Route::get('user-profile/products', [ProductController::class, 'index']); // Listar todos los productos
+     Route::get('user-profile/products/{id}', [ProductController::class, 'show']); // Obtener los detalles de un producto específico
+ 
     //CATEGORIAS
     Route::get('user-profile/categories', [CategoryController::class, 'index']); // Listar todas las categorías
     Route::get('user-profile/categories/{id}', [CategoryController::class, 'show']);//Buscar categoria en especifico
@@ -71,25 +84,7 @@ Route::middleware([EnsureFrontendRequestsAreStateful::class, 'auth:sanctum'])->g
         Route::put('user-profile/subcategories/{id}', [SubcategoryController::class, 'update']); // Actualizar una subcategoría existente
         Route::delete('user-profile/subcategories/{id}', [SubcategoryController::class, 'destroy']); // Eliminar una subcategoría existente
     });
-
-    // Middleware para rutas protegidas por roles de cliente
-    Route::middleware(['role:client'])->group(function () {
-       // Route::get('/products', [ProductController::class, 'index']); // Ver productos
-       //Route::get('/products/{id}', [ProductController::class, 'show']); // Ver detalles de un producto específico
-        //Route::post('/cart', [CartController::class, 'add']); // Agregar al carrito
-       // Route::post('/purchase', [PurchaseController::class, 'makePurchase']); // Realizar compra
-    });
 });
-
-// Rutas para Roles y Permisos
-Route::post('/roles', [RolePermissionController::class, 'createRole']); // Crear un nuevo rol
-Route::post('/permissions', [RolePermissionController::class, 'createPermission']); // Crear un nuevo permiso
-Route::post('/roles/assign-permissions', [RolePermissionController::class, 'assignPermissionToRole']); // Asignar permisos a un rol existente
-Route::post('/assign-role', [RolePermissionController::class, 'assignRole']); // Asignar un rol a un usuario
-Route::delete('/roles/{id}', [RolePermissionController::class, 'deleteRole']); // Eliminar un rol
-Route::delete('/permissions/{id}', [RolePermissionController::class, 'deletePermission']); // Eliminar un permiso
-Route::get('/roles', [RolePermissionController::class, 'getAllRoles']); // Listar todos los roles
-Route::get('/permissions', [RolePermissionController::class, 'getAllPermissions']); // Listar todos los permisos
 
 
 
