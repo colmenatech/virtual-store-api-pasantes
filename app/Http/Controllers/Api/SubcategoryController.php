@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Subcategory;
 
-class SubcategoryController extends Controller
+class SubcategorygController extends Controller
 {
    /* public function __construct()
     {
