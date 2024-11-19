@@ -39,13 +39,13 @@ Route::middleware([EnsureFrontendRequestsAreStateful::class, 'auth:sanctum'])->g
     Route::post('logout', [AuthController::class, 'logout']); // Cierre de sesión del usuario
     Route::get('users', [AuthController::class, 'allUsers']); // Muestra una lista de todos los usuarios
 
-   
+
     //FACTURA
     // Rutas para compras
-    Route::post('/checkout', [CheckoutController::class, 'checkout']); // Realizar una compra
-    Route::get('/checkout/{id}', [CheckoutController::class, 'getInvoiceById']); // Obtener una factura específica
-    Route::get('/invoice', [InvoiceController::class, 'index']); // Listar todas las facturas
-    Route::get('/invoice/{id}', [InvoiceController::class, 'show']); // Obtener los detalles de una factura específica
+    Route::post('user-profile/checkout', [CheckoutController::class, 'checkout']); // Realizar una compra
+    Route::get('user-profile/checkout/{id}', [CheckoutController::class, 'getInvoiceById']); // Obtener una factura específica
+    Route::get('user-profile/invoice', [InvoiceController::class, 'index']); // Listar todas las facturas
+    Route::get('user-profile/invoice/{id}', [InvoiceController::class, 'show']); // Obtener los detalles de una factura específica
 
     //TARJETA
     Route::get('user-profile/cards', [CardController::class, 'index']); // Listar todas las tarjetas del usuario
@@ -57,7 +57,7 @@ Route::middleware([EnsureFrontendRequestsAreStateful::class, 'auth:sanctum'])->g
     //PRODUCTOS
      Route::get('user-profile/products', [ProductController::class, 'index']); // Listar todos los productos
      Route::get('user-profile/products/{id}', [ProductController::class, 'show']); // Obtener los detalles de un producto específico
- 
+
     //CATEGORIAS
     Route::get('user-profile/categories', [CategoryController::class, 'index']); // Listar todas las categorías
     Route::get('user-profile/categories/{id}', [CategoryController::class, 'show']);//Buscar categoria en especifico
@@ -67,7 +67,7 @@ Route::middleware([EnsureFrontendRequestsAreStateful::class, 'auth:sanctum'])->g
     Route::get('user-profile/subcategories', [SubcategoryController::class, 'index']); // Listar todas las subcategorías
     Route::get('user-profile/subcategories/{id}', [SubcategoryController::class, 'show']); // Obtener los detalles de una subcategoría específica
 
-   
+
     Route::middleware(['role:admin'])->group(function () {
         // Rutas CRUD para Administradores (productos)
         Route::post('user-profile/products', [ProductController::class, 'store']); // Crear un nuevo producto
