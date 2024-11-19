@@ -47,9 +47,10 @@ Route::middleware([EnsureFrontendRequestsAreStateful::class, 'auth:sanctum'])->g
     Route::get('user-profile/invoice', [InvoiceController::class, 'index']); // Listar todas las facturas
     Route::get('user-profile/invoice/{id}', [InvoiceController::class, 'show']); // Obtener los detalles de una factura específica
 
+
     //TARJETA
     Route::get('user-profile/cards', [CardController::class, 'index']); // Listar todas las tarjetas del usuario
-    Route::post('user-profile/cards', [CardController::class, 'store']); // Crear una nueva tarjeta
+    Route::post('user-profile/cards', [CardController::class, 'store']);    // Crear una nueva tarjeta
     Route::get('user-profile/cards/{id}', [CardController::class, 'show']); // Obtener los detalles de una tarjeta específica
     Route::put('user-profile/cards/{id}', [CardController::class, 'update']); // Actualizar una tarjeta existente
     Route::delete('user-profile/cards/{id}', [CardController::class, 'destroy']); // Eliminar una tarjeta existente
