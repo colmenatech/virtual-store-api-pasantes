@@ -47,7 +47,6 @@ Route::middleware([EnsureFrontendRequestsAreStateful::class, 'auth:sanctum'])->g
     Route::get('user-profile/invoice', [InvoiceController::class, 'index']); // Listar todas las facturas
     Route::get('user-profile/invoice/{id}', [InvoiceController::class, 'show']); // Obtener los detalles de una factura específica
 
-
     //TARJETA
     Route::get('user-profile/cards', [CardController::class, 'index']); // Listar todas las tarjetas del usuario
     Route::post('user-profile/cards', [CardController::class, 'store']);    // Crear una nueva tarjeta
@@ -58,6 +57,7 @@ Route::middleware([EnsureFrontendRequestsAreStateful::class, 'auth:sanctum'])->g
     //PRODUCTOS
      Route::get('user-profile/products', [ProductController::class, 'index']); // Listar todos los productos
      Route::get('user-profile/products/{id}', [ProductController::class, 'show']); // Obtener los detalles de un producto específico
+     Route::get('user-profile/products/subcategory/{subcategoryId}', [ProductController::class, 'getProductsBySubcategory']);  // Ruta para obtener productos por subcategoría
 
     //CATEGORIAS
     Route::get('user-profile/categories', [CategoryController::class, 'index']); // Listar todas las categorías
