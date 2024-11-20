@@ -9,12 +9,7 @@ use App\Models\Subcategory;
 
 class SubcategoryController extends Controller
 {
-   /* public function __construct()
-    {
-        $this->middleware('role:admin')->except(['index', 'show']);
-        $this->middleware('role:client')->only(['index', 'show']);
-    }*/
-
+   
     // Array de mensajes
     private $messages = [
         'not_found' => ['message' => 'No se encontró la subcategoría.', 'status' => 404],
