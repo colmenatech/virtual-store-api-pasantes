@@ -141,6 +141,7 @@ class ProductController extends Controller
         ], 200);
     }
 
+
     // Método para obtener todos los productos para el cliente
     public function indexcliente()
     {
@@ -179,5 +180,4 @@ class ProductController extends Controller
             'status' => $this->messages['found']['status']
         ], 200);
     }
-
 }

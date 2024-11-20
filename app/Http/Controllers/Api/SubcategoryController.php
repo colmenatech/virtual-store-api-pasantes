@@ -71,6 +71,7 @@ class SubcategoryController extends Controller
         // Validar los datos del request
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:50', // Asegúrate de que el campo sea el mismo que en tu solicitud
+            'category_id' => 'required|integer|exists:categories,id',
         ]);
 
         // Verificar si la validación falla
