@@ -141,6 +141,7 @@ class ProductController extends Controller
         ], 200);
     }
 
+
     // Método para obtener todos los productos para el cliente
     public function indexcliente()
     {
@@ -153,6 +154,26 @@ class ProductController extends Controller
         }
 
         // Preparar y retornar respuesta JSON con los productos encontrados y mensaje de éxito
+        return response()->json([
+            'message' => $this->messages['found']['message'],
+            'products' => $products,
+            'status' => $this->messages['found']['status']
+        ], 200);
+    }
+
+
+    // Función para buscar productos por ID de subcategoría
+    public function getProductsBySubcategory($subcategory_id)
+    {
+        // Obtener los productos que pertenezcan a la subcategoría dada
+        $products = Product::where('subcategory_id', $subcategory_id)->get();
+
+        // Verificar si no se encontraron productos
+        if ($products->isEmpty()) {
+            return response()->json($this->messages['not_found'], 404);
+        }
+
+        // Retornar respuesta con los productos encontrados
         return response()->json([
             'message' => $this->messages['found']['message'],
             'products' => $products,

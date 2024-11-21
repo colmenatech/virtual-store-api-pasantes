@@ -9,12 +9,7 @@ use App\Models\Subcategory;
 
 class SubcategoryController extends Controller
 {
-   /* public function __construct()
-    {
-        $this->middleware('role:admin')->except(['index', 'show']);
-        $this->middleware('role:client')->only(['index', 'show']);
-    }*/
-
+   
     // Array de mensajes
     private $messages = [
         'not_found' => ['message' => 'No se encontró la subcategoría.', 'status' => 404],
@@ -71,6 +66,7 @@ class SubcategoryController extends Controller
         // Validar los datos del request
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:50', // Asegúrate de que el campo sea el mismo que en tu solicitud
+            'category_id' => 'required|integer|exists:categories,id',
         ]);
 
         // Verificar si la validación falla
