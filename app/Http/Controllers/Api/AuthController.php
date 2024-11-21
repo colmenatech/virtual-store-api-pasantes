@@ -23,10 +23,13 @@ use Illuminate\Support\Facades\Cookie;
 // Importa la clase Response para manejar respuestas HTTP
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Gate;
+use Laravel\Sanctum\HasApiTokens;
 
 
 class AuthController extends Controller
-{public function register(Request $request)
+{
+    public function register(Request $request)
     {
         // Validación de los datos de entrada
         $validator = Validator::make($request->all(), [
@@ -53,33 +56,37 @@ class AuthController extends Controller
         // Respuesta exitosa con el usuario creado
         return response()->json(['message' => 'Usuario registrado exitosamente.', 'user' => $user, 'status' => Response::HTTP_CREATED], Response::HTTP_CREATED);
     }
-    
 
-public function login(Request $request)
+    public function login(Request $request)
 {
-    // Validación de las credenciales de entrada
-    $credentials = $request->validate([
-        'email' => ['required', 'email'], // El email es requerido y debe ser un email válido
-        'password' => ['required'] // La contraseña es requerida
-    ]);
+    $credentials = $request->only('email', 'password');
 
-    // Intento de autenticación
     if (Auth::attempt($credentials)) {
-        $user = Auth::user(); // Obtiene el usuario autenticado
+        // Autenticación exitosa, generar el token
+        $user = Auth::user();
+        $token = $user->createToken('YourAppName')->plainTextToken;
 
-        // Crea un token de acceso y lo convierte a texto plano
-        $token = $user->createToken('token')->plainTextToken;
+        // Obtener los permisos del usuario (ejemplo usando Gates)
+        $permissions = Gate::forUser($user)->abilities();
 
-        // (Opcional) Crea una cookie con el token que dura 24 horas
-        $cookie = cookie('cookie_token', $token, 60 * 24);
+        // Obtener el rol del usuario
+        $roles = $user->getRoleNames(); // Retorna una colección de nombres de roles
 
-        // Respuesta exitosa con el token generado
-        return response(["token" => $token], Response::HTTP_OK)->withCookie($cookie);
-    } else {
-        // Respuesta de error si las credenciales son inválidas
-        return response(["message" => "Credenciales inválidas"], Response::HTTP_UNAUTHORIZED);
+        return response()->json([
+            'token' => $token,
+            'user' => [
+                'id' => $user->id,
+                'email' => $user->email,
+                'name' => $user->name,
+                'roles' => $roles,
+            ],
+            
+        ]);
     }
+
+    return response()->json(['error' => 'Unauthorized'], 401);
 }
+
 
 
     // Método para obtener el perfil del usuario autenticado
