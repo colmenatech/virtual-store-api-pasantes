@@ -42,7 +42,7 @@ Route::middleware([EnsureFrontendRequestsAreStateful::class, 'auth:sanctum'])->g
 
     //FACTURA
     // Rutas para compras
-    Route::post('user-profile/checkout', [CheckoutController::class, 'checkout']); // Realizar una compra
+    Route::post('user-profile/checkout', [CheckoutController::class, 'checkout']);// Realizar una compra
     Route::get('user-profile/checkout/{id}', [CheckoutController::class, 'getInvoiceById']); // Obtener una factura específica
     Route::get('user-profile/invoice', [InvoiceController::class, 'index']); // Listar todas las facturas
     Route::get('user-profile/invoice/{id}', [InvoiceController::class, 'show']); // Obtener los detalles de una factura específica
