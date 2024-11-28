@@ -47,4 +47,35 @@ class User extends Authenticatable
     {
         return $this->hasMany(Card::class);
     }
+
+    // Relación con el modelo Invoice (facturas)
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class);
+    }
+
+    // Método para verificar si el usuario se puede eliminar
+    public function canDelete(): bool
+    {
+        // Verificar si el usuario tiene facturas
+        if ($this->invoices()->exists()) {
+            return false; // No se puede eliminar el usuario porque tiene facturas
+        }
+
+        // Verificar si el usuario tiene tarjetas
+        if ($this->cards()->exists()) {
+            return false; // No se puede eliminar el usuario porque tiene tarjetas
+        }
+
+        return true; // No tiene facturas ni tarjetas, se puede eliminar
+    }
+
+    // Método para eliminar todas las tarjetas del usuario
+    public function deleteCards()
+    {
+        foreach ($this->cards as $card) {
+            $card->delete();
+        }
+    }
+    
 }

@@ -25,4 +25,13 @@ class Product extends Model
          return $this->belongsTo(Subcategory::class);
      }
 
+     public function detailInvoices()
+    {
+        return $this->hasMany(DetailInvoice::class);
+    }
+
+    public function canDelete(): bool
+    {
+        return $this->detailInvoices->isEmpty();
+    }
 }

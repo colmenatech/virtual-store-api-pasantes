@@ -34,11 +34,11 @@ Route::middleware([EnsureFrontendRequestsAreStateful::class, 'auth:sanctum'])->g
     Route::get('/roles', [RolePermissionController::class, 'getAllRoles']); // Listar todos los roles
     Route::get('/permissions', [RolePermissionController::class, 'getAllPermissions']); // Listar todos los permisos
 
-
+    //USUARIOS
     Route::get('user-profile', [AuthController::class, 'userProfile']); // Muestra el perfil del usuario autenticado
     Route::post('logout', [AuthController::class, 'logout']); // Cierre de sesión del usuario
     Route::get('users', [AuthController::class, 'allUsers']); // Muestra una lista de todos los usuarios
-
+    Route::delete('user-profile/deleteuser/{id}', [AuthController::class, 'destroy']); //elimina el usuario
 
     //FACTURA
     // Rutas para compras
