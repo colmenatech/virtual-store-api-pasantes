@@ -10,7 +10,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
-            Schema::create('detailinvoices', function (Blueprint $table) {
+            Schema::create('detail_invoices', function (Blueprint $table) {
             $table->id();  // Llave primaria
             $table->foreignId('invoice_id');
             $table->foreignId('product_id');
@@ -33,6 +33,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('detailinvoices');
+        Schema::dropIfExists('detail_invoices');
     }
 };
