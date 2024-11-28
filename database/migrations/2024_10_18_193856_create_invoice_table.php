@@ -17,8 +17,6 @@ return new class extends Migration {
             $table->foreign('user_id')->references('id')->on('users')->onDelete('restrict'); //Relaciòn de id users con invoice
             $table->timestamps(); // Añadir los campos created_at y updated_at
         });
-
-
     }
 
     /**
