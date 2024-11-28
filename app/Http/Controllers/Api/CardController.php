@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 class CardController extends Controller
 {
+
     // Método para listar todas las tarjetas del usuario
     public function index()
     {

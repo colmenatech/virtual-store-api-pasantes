@@ -18,6 +18,7 @@ class SubcategoryController extends Controller
         'creation_error' => ['message' => 'Error al crear la subcategoría.', 'status' => 500],
         'deleted' => ['message' => 'Subcategoría eliminada exitosamente.', 'status' => 200],
         'found' => ['message' => 'Subcategorías encontradas.', 'status' => 200],
+        'not_delete' => ['message' => 'La subcategoría no puede ser eliminada, posee productos asociadas', 'status' => 404],
     ];
 
     // MÉTODO PARA OBTENER TODAS LAS SUBCATEGORÍAS
@@ -89,26 +90,25 @@ class SubcategoryController extends Controller
         return response()->json(array_merge($this->messages['created'], ['subcategory' => $subcategory]), 201);
     }
 
-    // MÉTODO PARA ELIMINAR UNA SUBCATEGORÍA
+    // Método para eliminar un subcategoria
     public function destroy($id)
     {
-        // Buscar la subcategoría por ID
+        // Buscar la subcategoria por ID
         $subcategory = Subcategory::find($id);
 
-        // Verificar si la subcategoría no se encuentra
+        // Verificar si la subcategoria no se encuentra
         if (!$subcategory) {
-            // Retornar respuesta JSON con mensaje de "No se encontró la subcategoría" y código de estado 404
             return response()->json($this->messages['not_found'], 404);
+        } else {
+            // Verificar si se puede eliminar
+            if (!$subcategory->canDelete()){
+                return response()->json($this->messages['not_delete'], 404); 
+            }
         }
+        // Eliminar la subcategoria encontrada
+        $subcategory->delete();
 
-         // Verificar si se encuentra el producto antes de eliminar
-        if ($subcategory) {
-            // Eliminar el producto encontrado
-            $subcategory->delete();
-
-            // Retornar respuesta JSON con mensaje de éxito y código de estado 200
-            return response()->json($this->messages['deleted'], 200);
-        }
+        return response()->json($this->messages['deleted'], 200);
     }
 
 

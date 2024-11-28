@@ -16,6 +16,7 @@ class ProductController extends Controller
         'created' => ['message' => 'Producto creado exitosamente.', 'status' => 201],
         'creation_error' => ['message' => 'Error al crear el producto.', 'status' => 500],
         'deleted' => ['message' => 'Producto eliminado exitosamente.', 'status' => 200],
+        'not_delete' => ['message' => 'El producto no puede ser eliminado, posee facturas asociadas', 'status' => 404],
     ];
 
     // Método para obtener todos los productos
@@ -80,8 +81,12 @@ class ProductController extends Controller
         // Verificar si el producto no se encuentra
         if (!$product) {
             return response()->json($this->messages['not_found'], 404);
+        } else {
+            // Verificar si se puede eliminar
+            if (!$product->canDelete()){
+                return response()->json($this->messages['not_delete'], 404); 
+            }
         }
-
         // Eliminar el producto encontrado
         $product->delete();
 
