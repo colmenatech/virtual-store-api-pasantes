@@ -32,12 +32,14 @@ class CheckoutController extends Controller
             $product = Product::find($item['product_id']); // Busca el producto por ID
             Log::info('Producto: ' . $product->name . ', Stock: ' . $product->stock . ', Cantidad solicitada: ' . $item['quantity']);
             if (!$product) {
-                return response()->json(['message' => 'Producto no encontrado', 'status' => 404], 404); // Retorna un error si el producto no es encontrado
+                return response()->json(['message' => 'Producto no encontrado', 'status' => 404], 404);
+                // Retorna un error si el producto no es encontrado
             }
             if ($product->stock < $item['quantity']) {
                 return response()->json(['message' => 'Stock insuficiente para el producto ' . $product->name], 400); // Retorna un error si el stock es insuficiente
             }
-            $total += $product->price * $item['quantity']; // Calcula el total acumulando el precio de los productos
+            $total += $product->price * $item['quantity'];
+            // Calcula el total acumulando el precio de los productos
         }
 
         // Crea una nueva factura en la base de datos.
@@ -49,9 +51,11 @@ class CheckoutController extends Controller
         // Recorre cada producto nuevamente para crear los detalles de la factura y actualizar el stock.
         foreach ($request->products as $item) {
             $product = Product::find($item['product_id']); // Busca el producto por ID
-            $product->stock -= $item['quantity']; // Reduce el stock del producto basado en la cantidad comprada
+            $product->stock -= $item['quantity'];
+            // Reduce el stock del producto basado en la cantidad comprada
             if ($product->stock == 0) {
-                $product->status = 'inactivo'; // Actualiza el estado del producto a 'inactivo' si el stock es 0
+                $product->status = 'inactivo';
+                // Actualiza el estado del producto a 'inactivo' si el stock es 0
             }
             $product->save(); // Guarda los cambios en el producto
 
@@ -66,11 +70,13 @@ class CheckoutController extends Controller
 
         // Confirma la transacción si todo salió bien.
         DB::commit();
-        return response()->json(['message' => 'Compra finalizada y factura generada.', 'invoice' => $invoice, 'details' => $invoice->detailinvoices], 201);
+        return response()->json(['message' => 'Compra finalizada y factura generada.',
+         'invoice' => $invoice, 'details' => $invoice->detailinvoices], 201);
     } catch (\Exception $e) {
         // Revertir la transacción en caso de error.
         DB::rollBack();
-        return response()->json(['message' => 'Error al procesar la compra.', 'error' => $e->getMessage()], 500);
+        return response()->json(['message' => 'Error al procesar la compra.', 
+        'error' => $e->getMessage()], 500);
     }
 }
     // Método para obtener una factura específica por ID
