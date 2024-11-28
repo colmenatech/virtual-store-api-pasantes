@@ -111,4 +111,30 @@ class AuthController extends Controller
         ]);
     }
 
+   // Método para eliminar un usuario
+   public function destroy($id)
+   {
+       // Buscar el usuario por ID
+       $user = User::find($id);
+
+       // Verificar si el usuario no se encuentra
+       if (!$user) {
+           return response()->json(['message' => 'Usuario no encontrado.'], 404);
+       }
+
+       // Verificar si el usuario tiene facturas
+       if ($user->invoices()->exists()) {
+           return response()->json(['message' => 'No se puede eliminar el usuario porque tiene facturas.'], 403);
+       }
+
+       // Eliminar las tarjetas del usuario si las tiene
+       if ($user->cards()->exists()) {
+           $user->deleteCards();
+       }
+
+       // Eliminar el usuario encontrado
+       $user->delete();
+
+       return response()->json(['message' => 'Usuario y sus tarjetas eliminados. Sesión cerrada.'], 200);
+   }
 }

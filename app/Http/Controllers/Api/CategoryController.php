@@ -23,6 +23,7 @@ class CategoryController extends Controller
         'validation_error' => ['message' => 'Error en la validación de los datos.', 'status' => 400],
         'creation_error' => ['message' => 'Error al crear la categoría.', 'status' => 500],
         'deleted' => ['message' => 'Categoría eliminada exitosamente.', 'status' => 200], // Añadir mensaje de eliminado exitosamente
+        'not_delete' => ['message' => 'La categoría no puede ser eliminada, posee productos asociados', 'status' => 404],
 
 ];
 
@@ -139,27 +140,29 @@ public function index()
     }
 
 
-    // MÉTODO PARA ELIMINAR UNA CATEGORÍA
     public function destroy($id)
     {
         // Buscar la categoría por ID
         $category = Category::find($id);
-
+    
         // Verificar si la categoría no se encuentra
         if (!$category) {
-            // Retornar respuesta JSON con mensaje de "No se encontró la categoría" y código de estado 404
             return response()->json($this->messages['not_found'], 404);
         }
-
-        // Verificar si se encuentra el producto antes de eliminar
-        if ($category) {
-            // Eliminar el producto encontrado
-            $category->delete();
-
-            // Retornar respuesta JSON con mensaje de éxito y código de estado 200
-            return response()->json($this->messages['deleted'], 200);
+    
+        // Verificar si se puede eliminar la categoría
+        if (!$category->canDelete()) {
+            return response()->json($this->messages['not_delete'], 404);
         }
+    
+        // Eliminar las subcategorías asociadas
+        foreach ($category->subcategories as $subcategory) {
+            $subcategory->delete();
+        }
+    
+        // Eliminar la categoría encontrada
+        $category->delete();
+    
+        return response()->json($this->messages['deleted'], 200);
     }
-
-
 }

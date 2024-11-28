@@ -19,6 +19,8 @@ return new class extends Migration {
             $table->timestamps(); // Añadir los campos created_at y updated_at
 
             $table->foreign('product_id')->references('id')->on('products')->onDelete('restrict');
+            //relacion del campo id de la tabla invoice a la de detailinvoice
+            //se define invoice_id como clave foránea
             $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('restrict');
             //relacion del campo id de la tabla invoice a la de detailinvoice
             //se define invoice_id como clave foránea
