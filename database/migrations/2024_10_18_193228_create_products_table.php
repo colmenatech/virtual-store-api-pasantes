@@ -10,7 +10,6 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        if (!Schema::hasTable('products')) {
         Schema::create('products', function (Blueprint $table) {
             $table->id(); // Llave primaria
             $table->string('name'); // Nombre del producto
@@ -27,7 +26,6 @@ return new class extends Migration {
             //se define subcategory_id como clave foránea
 
         });
-    }
     }
 
     /**
