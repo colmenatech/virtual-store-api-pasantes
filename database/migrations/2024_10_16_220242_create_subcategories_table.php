@@ -12,7 +12,6 @@ return new class extends Migration
     public function up(): void
     {
         // Verificar si la tabla 'subcategories' no existe antes de crearla
-        if (!Schema::hasTable('subcategories')) {
             // Crear la tabla 'subcategories'
             Schema::create('subcategories', function (Blueprint $table) {
                 $table->id(); // Columna ID con auto-incremento
@@ -23,7 +22,6 @@ return new class extends Migration
 
                 $table->timestamps(); // Añadir columnas created_at y updated_at para gestionar automáticamente las marcas de tiempo
             });
-        }
     }
 
     public function down(): void
