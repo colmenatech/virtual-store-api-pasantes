@@ -63,6 +63,11 @@ Route::middleware([EnsureFrontendRequestsAreStateful::class, 'auth:sanctum'])->g
     Route::get('user-profile/subcategories', [SubcategoryController::class, 'index']); // Listar todas las subcategorías
     Route::get('user-profile/subcategories/{id}', [SubcategoryController::class, 'show']); // Obtener los detalles de una subcategoría específica
 
+     // Rutas CRUD para Administradores (productos)
+     Route::get('user-profile/products', [ProductController::class, 'index']); // Listar todos los productos
+     Route::get('user-profile/products/{id}', [ProductController::class, 'show']); // Obtener los detalles de un producto específico
+     Route::get('user-profile/products/subcategory/{subcategoryId}', [ProductController::class, 'getProductsBySubcategory']);  // Ruta para obtener productos por subcategoría
+    
 
     Route::middleware(['role:admin'])->group(function () {
         // Rutas CRUD para Administradores (productos)
@@ -86,9 +91,9 @@ Route::middleware([EnsureFrontendRequestsAreStateful::class, 'auth:sanctum'])->g
     });
 
     Route::middleware(['role:client'])->group(function () {
-        Route::get('user-profile/products', [ProductController::class, 'indexcliente']);
-        Route::get('user-profile/products/{id}', [ProductController::class, 'showcliente']);
-        Route::get('user-profile/products/subcategory/{subcategoryId}', [ProductController::class, 'getProductsBySubcategorycliente']);
+        Route::get('user-profile/productsclient', [ProductController::class, 'indexcliente']);
+        Route::get('user-profile/productsclient/{id}', [ProductController::class, 'showcliente']);
+        Route::get('user-profile/products/subcategoryclient/{subcategoryId}', [ProductController::class, 'getProductsBySubcategorycliente']);
     });
       
     
