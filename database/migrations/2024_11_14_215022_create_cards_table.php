@@ -11,9 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasTable('categories'))
-        {
-            Schema::create('cards', function (Blueprint $table) {
+           Schema::create('cards', function (Blueprint $table) {
             $table->id();
             $table->string('number')->unique(); // Número de la tarjeta
             $table->string('type'); // Tipo de tarjeta (Visa, MasterCard, etc.)
@@ -25,7 +23,6 @@ return new class extends Migration
             //se define user_id como clave foránea
             });
         }
-    }
 
     /**
      * Reverse the migrations.

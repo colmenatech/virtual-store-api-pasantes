@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Verificar si la tabla 'categories' no existe antes de crearla
-        if (!Schema::hasTable('categories')) {
+        // crear tabla 'categories' 
             Schema::create('categories', function (Blueprint $table) {
                 $table->id();
                 $table->string('name', 50); // Columna de nombre de categoría
                 $table->timestamps();
             });
         }
-    }
+
 
     public function down(): void
     {

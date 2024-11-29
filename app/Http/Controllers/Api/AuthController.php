@@ -37,22 +37,22 @@ class AuthController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
         ]);
-    
+
         // Verificar si la validación falla
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors(), 'status' => 422], 422);
         }
-    
+
         // Alta del usuario
         $user = new User(); // Crea una nueva instancia del modelo User
         $user->name = $request->name; // Asigna el nombre del request al modelo User
         $user->email = $request->email; // Asigna el email del request al modelo User
         $user->password = Hash::make($request->password); // Hashea la contraseña y la asigna al modelo User
         $user->save(); // Guarda el usuario en la base de datos
-    
+
         // Asignar el rol de cliente al nuevo usuario
         $user->assignRole('client');
-    
+
         // Respuesta exitosa con el usuario creado
         return response()->json(['message' => 'Usuario registrado exitosamente.', 'user' => $user, 'status' => Response::HTTP_CREATED], Response::HTTP_CREATED);
     }
@@ -80,7 +80,7 @@ class AuthController extends Controller
                 'name' => $user->name,
                 'roles' => $roles,
             ],
-            
+
         ]);
     }
 
