@@ -25,6 +25,7 @@ class Product extends Model
          return $this->belongsTo(Subcategory::class);
      }
 
+     //Relacion con detalle de factura
      public function detailInvoices()
     {
         return $this->hasMany(DetailInvoice::class);
